@@ -40,7 +40,11 @@
 
         <div class="row position-relative">
 
-          <div class="col-lg-7 about-img" data-aos="zoom-out" data-aos-delay="200"><img src="{{ asset($settings['about_image'] ?? 'landingPage/img/about.jpg') }}"></div>
+          @php
+              $aboutImage = $settings['about_image'] ?? 'landingPage/img/about.jpg';
+              $aboutImageUrl = str_starts_with($aboutImage, 'landingPage/') ? asset($aboutImage) : Storage::url($aboutImage);
+          @endphp
+          <div class="col-lg-7 about-img" data-aos="zoom-out" data-aos-delay="200"><img src="{{ $aboutImageUrl }}"></div>
 
           <div class="col-lg-7" data-aos="fade-up" data-aos-delay="100">
             <h2 class="inner-title">{{ $settings['about_title'] ?? '' }}</h2>
@@ -57,7 +61,7 @@
 
               <div class="watch-video d-flex align-items-center position-relative">
                 <i class="bi bi-play-circle"></i>
-                <a href="{{ $settings['about_video_url'] ?? '#' }}" class="glightbox stretched-link">Watch Video</a>
+                <a href="{{ $settings['about_video_url'] ?? '#' }}" class="glightbox stretched-link">{{ $settings['about_video_text'] ?? 'Watch Video' }}</a>
               </div>
             </div>
           </div>

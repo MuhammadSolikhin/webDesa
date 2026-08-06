@@ -10,7 +10,7 @@ class MenuController extends Controller
 {
     public function index()
     {
-        $menus = Menu::with('parent')->orderBy('order')->get();
+        $menus = Menu::with('children')->whereNull('parent_id')->orderBy('order')->get();
         return view('admin.menu.index', compact('menus'));
     }
 
@@ -72,5 +72,21 @@ class MenuController extends Controller
     {
         $menu->delete();
         return redirect()->route('admin.menu.index')->with('success', 'Menu deleted successfully.');
+    }
+
+    public function reorder(Request $request)
+    {
+        $items = $request->input('items', []);
+
+        \Illuminate\Support\Facades\DB::transaction(function () use ($items) {
+            foreach ($items as $item) {
+                Menu::where('id', $item['id'])->update([
+                    'order' => $item['order'],
+                    'parent_id' => $item['parent_id'] ?: null,
+                ]);
+            }
+        });
+
+        return response()->json(['success' => true]);
     }
 }

@@ -14,6 +14,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/admin/landing', [\App\Http\Controllers\Admin\LandingPageController::class, 'update'])->name('admin.landing.update');
     
     Route::resource('/admin/menu', \App\Http\Controllers\Admin\MenuController::class)->names('admin.menu');
+    Route::post('/admin/menu/reorder', [\App\Http\Controllers\Admin\MenuController::class, 'reorder'])->name('admin.menu.reorder');
     Route::resource('/admin/hero', \App\Http\Controllers\Admin\HeroController::class)->names('admin.hero');
     Route::resource('/admin/service', \App\Http\Controllers\Admin\ServiceController::class)->names('admin.service');
     Route::resource('/admin/portfolio', \App\Http\Controllers\Admin\PortfolioController::class)->names('admin.portfolio');

@@ -74,10 +74,10 @@
       </nav>
 
       <div class="header-social-links">
-        <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
-        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+        @if(!empty($settings['contact_twitter'])) <a href="{{ $settings['contact_twitter'] }}" class="twitter"><i class="bi bi-twitter-x"></i></a> @endif
+        @if(!empty($settings['contact_facebook'])) <a href="{{ $settings['contact_facebook'] }}" class="facebook"><i class="bi bi-facebook"></i></a> @endif
+        @if(!empty($settings['contact_instagram'])) <a href="{{ $settings['contact_instagram'] }}" class="instagram"><i class="bi bi-instagram"></i></a> @endif
+        @if(!empty($settings['contact_linkedin'])) <a href="{{ $settings['contact_linkedin'] }}" class="linkedin"><i class="bi bi-linkedin"></i></a> @endif
       </div>
 
     </div>
@@ -96,16 +96,15 @@
             <span class="sitename">Profil Desa</span>
           </a>
           <div class="footer-contact pt-3">
-            <p>Jl. Balai Desa No. 1</p>
-            <p>Kecamatan, Kabupaten, Kode Pos</p>
-            <p class="mt-3"><strong>Telepon:</strong> <span>021-1234567</span></p>
-            <p><strong>Email:</strong> <span>admin@desa.go.id</span></p>
+            <p>{!! nl2br(e($settings['contact_address'] ?? "Jl. Balai Desa No. 1\nKecamatan, Kabupaten, Kode Pos")) !!}</p>
+            <p class="mt-3"><strong>Telepon:</strong> <span>{{ $settings['contact_phone'] ?? '021-1234567' }}</span></p>
+            <p><strong>Email:</strong> <span>{{ $settings['contact_email'] ?? 'admin@desa.go.id' }}</span></p>
           </div>
           <div class="social-links d-flex mt-4">
-            <a href=""><i class="bi bi-twitter-x"></i></a>
-            <a href=""><i class="bi bi-facebook"></i></a>
-            <a href=""><i class="bi bi-instagram"></i></a>
-            <a href=""><i class="bi bi-linkedin"></i></a>
+            @if(!empty($settings['contact_twitter'])) <a href="{{ $settings['contact_twitter'] }}"><i class="bi bi-twitter-x"></i></a> @endif
+            @if(!empty($settings['contact_facebook'])) <a href="{{ $settings['contact_facebook'] }}"><i class="bi bi-facebook"></i></a> @endif
+            @if(!empty($settings['contact_instagram'])) <a href="{{ $settings['contact_instagram'] }}"><i class="bi bi-instagram"></i></a> @endif
+            @if(!empty($settings['contact_linkedin'])) <a href="{{ $settings['contact_linkedin'] }}"><i class="bi bi-linkedin"></i></a> @endif
           </div>
         </div>
 

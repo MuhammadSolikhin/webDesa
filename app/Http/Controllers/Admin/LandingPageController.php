@@ -18,10 +18,20 @@ class LandingPageController extends Controller
     {
         $data = $request->except(['_token', '_method']);
         
+        if ($request->hasFile('about_image')) {
+            $imagePath = $request->file('about_image')->store('about', 'public');
+            $data['about_image'] = $imagePath;
+            
+            $oldImage = LandingSetting::where('key', 'about_image')->value('value');
+            if ($oldImage && !str_starts_with($oldImage, 'landingPage/')) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($oldImage);
+            }
+        }
+        
         foreach ($data as $key => $value) {
             LandingSetting::updateOrCreate(
                 ['key' => $key],
-                ['value' => is_array($value) ? json_encode($value) : $value]
+                ['value' => is_array($value) ? json_encode(array_values(array_filter($value, fn($v) => !is_null($v) && $v !== ''))) : $value]
             );
         }
 

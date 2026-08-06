@@ -21,44 +21,116 @@
                         </div>
                     @endif
 
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full bg-white border border-gray-200">
-                            <thead>
-                                <tr>
-                                    <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">URL</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Parent</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Order</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Active</th>
-                                    <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($menus as $menu)
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">{{ $menu->id }}</td>
-                                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">{{ $menu->name }}</td>
-                                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">{{ $menu->url }}</td>
-                                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">{{ $menu->parent ? $menu->parent->name : '-' }}</td>
-                                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">{{ $menu->order }}</td>
-                                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">{{ $menu->is_active ? 'Yes' : 'No' }}</td>
-                                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 flex gap-2">
-                                        <a href="{{ route('admin.menu.edit', $menu) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                        <form action="{{ route('admin.menu.destroy', $menu) }}" method="POST" onsubmit="return confirm('Are you sure?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                    <div x-data="menuSortable()" x-init="initSortable()">
+                        <div x-show="isSaving" class="mb-4 text-sm font-medium text-indigo-600" style="display: none;">
+                            Saving order...
+                        </div>
+                        <div x-show="saveSuccess" class="mb-4 text-sm font-medium text-green-600" style="display: none;">
+                            Order saved successfully!
+                        </div>
+
+                        <ul class="nested-sortable min-h-[50px]" id="root-menu-list" data-parent-id="">
+                            @foreach($menus as $menu)
+                                @include('admin.menu.partials.menu-item', ['menu' => $menu])
+                            @endforeach
+                        </ul>
                     </div>
 
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Include SortableJS -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('menuSortable', () => ({
+                isSaving: false,
+                saveSuccess: false,
+                initSortable() {
+                    let nestedSortables = document.querySelectorAll('.nested-sortable');
+                    
+                    for (let i = 0; i < nestedSortables.length; i++) {
+                        new Sortable(nestedSortables[i], {
+                            group: 'nested',
+                            animation: 150,
+                            fallbackOnBody: true,
+                            swapThreshold: 0.65,
+                            handle: '.drag-handle',
+                            ghostClass: 'opacity-50',
+                            onEnd: (evt) => {
+                                this.saveOrder();
+                            }
+                        });
+                    }
+                },
+                saveOrder() {
+                    this.isSaving = true;
+                    this.saveSuccess = false;
+                    
+                    let items = [];
+                    let parseList = (listElement, parentId = null) => {
+                        let children = listElement.children;
+                        let order = 1;
+                        for (let i = 0; i < children.length; i++) {
+                            let li = children[i];
+                            let id = li.getAttribute('data-id');
+                            if (id) {
+                                items.push({
+                                    id: id,
+                                    parent_id: parentId,
+                                    order: order++
+                                });
+                                
+                                // Parse nested ul
+                                let nestedUl = li.querySelector(':scope > ul.nested-sortable');
+                                if (nestedUl) {
+                                    parseList(nestedUl, id);
+                                }
+                            }
+                        }
+                    };
+
+                    parseList(document.getElementById('root-menu-list'));
+
+                    fetch('{{ route('admin.menu.reorder') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({ items: items })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        this.isSaving = false;
+                        if(data.success) {
+                            this.saveSuccess = true;
+                            setTimeout(() => { this.saveSuccess = false; }, 3000);
+                        }
+                    })
+                    .catch(error => {
+                        this.isSaving = false;
+                        console.error('Error:', error);
+                        alert('An error occurred while saving the menu order.');
+                    });
+                }
+            }));
+        });
+    </script>
+    <style>
+        .nested-sortable {
+            list-style-type: none;
+        }
+        .nested-sortable .menu-item {
+            cursor: default;
+        }
+        .nested-sortable .drag-handle {
+            cursor: grab;
+        }
+        .nested-sortable .drag-handle:active {
+            cursor: grabbing;
+        }
+    </style>
 </x-app-layout>
