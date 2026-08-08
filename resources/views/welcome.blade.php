@@ -147,56 +147,46 @@
 
     </section><!-- /Portfolio Section -->
 
-    <!-- Clients Section -->
-    <section id="clients" class="clients section">
+    <!-- Tour Packages Section -->
+    <section id="tour-packages" class="services section light-background">
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
-        <h2>Mitra Desa</h2>
-        <p>Lembaga dan instansi yang bekerja sama dalam membangun desa kami</p>
+        <h2>Paket Wisata</h2>
+        <p>Pilih paket wisata terbaik untuk pengalaman tak terlupakan di desa kami</p>
       </div><!-- End Section Title -->
 
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="container">
 
-        <div class="row g-0 clients-wrap">
+        <div class="row gy-4">
 
-          <div class="col-xl-3 col-md-4 client-logo">
-            <img src="{{ asset('landingPage/img/clients/client-1.png') }}" class="img-fluid" alt="">
-          </div><!-- End Client Item -->
-
-          <div class="col-xl-3 col-md-4 client-logo">
-            <img src="{{ asset('landingPage/img/clients/client-2.png') }}" class="img-fluid" alt="">
-          </div><!-- End Client Item -->
-
-          <div class="col-xl-3 col-md-4 client-logo">
-            <img src="{{ asset('landingPage/img/clients/client-3.png') }}" class="img-fluid" alt="">
-          </div><!-- End Client Item -->
-
-          <div class="col-xl-3 col-md-4 client-logo">
-            <img src="{{ asset('landingPage/img/clients/client-4.png') }}" class="img-fluid" alt="">
-          </div><!-- End Client Item -->
-
-          <div class="col-xl-3 col-md-4 client-logo">
-            <img src="{{ asset('landingPage/img/clients/client-5.png') }}" class="img-fluid" alt="">
-          </div><!-- End Client Item -->
-
-          <div class="col-xl-3 col-md-4 client-logo">
-            <img src="{{ asset('landingPage/img/clients/client-6.png') }}" class="img-fluid" alt="">
-          </div><!-- End Client Item -->
-
-          <div class="col-xl-3 col-md-4 client-logo">
-            <img src="{{ asset('landingPage/img/clients/client-7.png') }}" class="img-fluid" alt="">
-          </div><!-- End Client Item -->
-
-          <div class="col-xl-3 col-md-4 client-logo">
-            <img src="{{ asset('landingPage/img/clients/client-8.png') }}" class="img-fluid" alt="">
-          </div><!-- End Client Item -->
+          @foreach($tourPackages as $package)
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ 100 * $loop->iteration }}">
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden" style="transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 15px 30px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 .125rem .25rem rgba(0,0,0,.075)'">
+              @if($package->image)
+              <img src="{{ asset('storage/' . $package->image) }}" class="card-img-top" alt="{{ $package->name }}" style="height: 250px; object-fit: cover;">
+              @else
+              <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 250px;">
+                  <span class="text-muted"><i class="bi bi-image text-secondary" style="font-size: 3rem;"></i></span>
+              </div>
+              @endif
+              <div class="card-body p-4 d-flex flex-column">
+                <h4 class="card-title fw-bold mb-3" style="color: var(--heading-color);">{{ $package->name }}</h4>
+                <p class="card-text text-muted mb-4">{{ \Illuminate\Support\Str::limit($package->description, 120) }}</p>
+                <div class="d-flex justify-content-between align-items-center mt-auto">
+                    <span class="fw-bold fs-5" style="color: var(--accent-color);">{{ $package->price ? 'Rp ' . number_format($package->price, 0, ',', '.') : 'Gratis' }}</span>
+                    <a href="https://wa.me/6280000000000?text=Halo%20saya%20tertarik%20dengan%20paket%20wisata%20{{ urlencode($package->name) }}" target="_blank" class="btn text-white rounded-pill px-4" style="background-color: var(--accent-color);">Pesan</a>
+                </div>
+              </div>
+            </div>
+          </div><!-- End Tour Package Item -->
+          @endforeach
 
         </div>
 
       </div>
 
-    </section><!-- /Clients Section -->
+    </section><!-- /Tour Packages Section -->
 
   
 @endsection

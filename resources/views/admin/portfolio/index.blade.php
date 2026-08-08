@@ -39,13 +39,15 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">{{ $portfolio->title }}</td>
                                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">{{ $portfolio->category }}</td>
-                                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 flex gap-2">
-                                        <a href="{{ route('admin.portfolio.edit', $portfolio) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                        <form action="{{ route('admin.portfolio.destroy', $portfolio) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:text-red-900 ml-2">Hapus</button>
-                                        </form>
+                                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                        <div class="flex space-x-3">
+                                            <a href="{{ route('admin.portfolio.edit', $portfolio) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                            <form action="{{ route('admin.portfolio.destroy', $portfolio) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                                 @endforeach
