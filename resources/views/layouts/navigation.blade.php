@@ -20,6 +20,14 @@
                     <span class="ml-2 font-medium">{{ __('Dashboard') }}</span>
                 </a>
                 
+                <a href="{{ route('admin.transactions.active') }}" class="flex items-center px-4 py-3 rounded-md transition duration-200 {{ request()->routeIs('admin.transactions.active') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
+                    <span class="ml-2 font-medium">{{ __('Paket Berjalan') }}</span>
+                </a>
+                
+                <a href="{{ route('admin.transactions.index') }}" class="flex items-center px-4 py-3 rounded-md transition duration-200 {{ request()->routeIs('admin.transactions.index') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
+                    <span class="ml-2 font-medium">{{ __('History Transaksi') }}</span>
+                </a>
+                
                 <a href="{{ route('admin.landing.edit') }}" class="flex items-center px-4 py-3 rounded-md transition duration-200 {{ request()->routeIs('admin.landing.edit') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
                     <span class="ml-2 font-medium">{{ __('Manage Landing Page') }}</span>
                 </a>
@@ -46,6 +54,14 @@
             @else
                 <a href="{{ route('user.dashboard') }}" class="flex items-center px-4 py-3 rounded-md transition duration-200 {{ request()->routeIs('user.dashboard') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
                     <span class="ml-2 font-medium">{{ __('Dashboard') }}</span>
+                </a>
+                
+                <a href="{{ route('user.transactions.active') }}" class="flex items-center px-4 py-3 rounded-md transition duration-200 {{ request()->routeIs('user.transactions.active') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
+                    <span class="ml-2 font-medium">{{ __('Paket Berjalan') }}</span>
+                </a>
+                
+                <a href="{{ route('user.transactions.index') }}" class="flex items-center px-4 py-3 rounded-md transition duration-200 {{ request()->routeIs('user.transactions.index') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
+                    <span class="ml-2 font-medium">{{ __('Riwayat Transaksi') }}</span>
                 </a>
             @endif
         </nav>

@@ -175,7 +175,7 @@
                 <p class="card-text text-muted mb-4">{{ \Illuminate\Support\Str::limit($package->description, 120) }}</p>
                 <div class="d-flex justify-content-between align-items-center mt-auto">
                     <span class="fw-bold fs-5" style="color: var(--accent-color);">{{ $package->price ? 'Rp ' . number_format($package->price, 0, ',', '.') : 'Gratis' }}</span>
-                    <a href="https://wa.me/6280000000000?text=Halo%20saya%20tertarik%20dengan%20paket%20wisata%20{{ urlencode($package->name) }}" target="_blank" class="btn text-white rounded-pill px-4" style="background-color: var(--accent-color);">Pesan</a>
+                    <a href="{{ route('checkout.show', $package) }}" class="btn text-white rounded-pill px-4" style="background-color: var(--accent-color);">Pesan</a>
                 </div>
               </div>
             </div>
