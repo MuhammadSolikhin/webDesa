@@ -24,4 +24,13 @@ class HomeController extends Controller
         return view('welcome', compact('heroes', 'services', 'settings', 'portfolios', 'tourPackages'));
     }
 
+    public function portfolio(\App\Models\Portfolio $portfolio)
+    {
+        return view('portfolio.show', compact('portfolio'));
+    }
+
+    public function tourPackage(\App\Models\TourPackage $tourPackage)
+    {
+        return view('tour-package.show', compact('tourPackage'));
+    }
 }

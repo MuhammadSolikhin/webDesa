@@ -134,7 +134,6 @@
                 <h4>{{ $portfolio->title }}</h4>
                 <p>{{ $portfolio->description }}</p>
                 <a href="{{ Storage::url($portfolio->image) }}" title="{{ $portfolio->title }}" data-gallery="portfolio-gallery-{{ str_replace('filter-', '', $portfolio->category) }}" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                <a href="#" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
               </div>
             </div><!-- End Portfolio Item -->
             @endforeach
@@ -175,7 +174,10 @@
                 <p class="card-text text-muted mb-4">{{ \Illuminate\Support\Str::limit($package->description, 120) }}</p>
                 <div class="d-flex justify-content-between align-items-center mt-auto">
                     <span class="fw-bold fs-5" style="color: var(--accent-color);">{{ $package->price ? 'Rp ' . number_format($package->price, 0, ',', '.') : 'Gratis' }}</span>
-                    <a href="{{ route('checkout.show', $package) }}" class="btn text-white rounded-pill px-4" style="background-color: var(--accent-color);">Pesan</a>
+                    <div>
+                        <a href="{{ route('tour-package.show', $package) }}" class="btn btn-outline-secondary rounded-pill px-3 me-2">Detail</a>
+                        <a href="{{ route('checkout.show', $package) }}" class="btn text-white rounded-pill px-4" style="background-color: var(--accent-color);">Pesan</a>
+                    </div>
                 </div>
               </div>
             </div>

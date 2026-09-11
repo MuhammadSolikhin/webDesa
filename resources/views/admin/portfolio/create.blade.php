@@ -45,6 +45,13 @@
                             <x-input-error class="mt-2" :messages="$errors->get('image')" />
                         </div>
 
+                        <!-- KML File -->
+                        <div>
+                            <x-input-label for="kml_file" :value="__('KML File (Map Data)')" />
+                            <input id="kml_file" name="kml_file" type="file" accept=".kml" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
+                            <x-input-error class="mt-2" :messages="$errors->get('kml_file')" />
+                        </div>
+
                         <div class="flex items-center justify-end mt-4 gap-4">
                             <a href="{{ route('admin.portfolio.index') }}" class="text-sm text-gray-600 hover:text-gray-900 underline">Batal</a>
                             <x-primary-button>

@@ -27,15 +27,21 @@ class PortfolioController extends Controller
             'description' => 'nullable|string',
             'image' => 'required|image|max:2048',
             'category' => 'required|string|max:255',
+            'kml_file' => 'nullable|file|mimetypes:application/vnd.google-earth.kml+xml,text/xml|max:10240',
         ]);
 
         $imagePath = $request->file('image')->store('portfolios', 'public');
+        $kmlFilePath = null;
+        if ($request->hasFile('kml_file')) {
+            $kmlFilePath = $request->file('kml_file')->store('kml_files', 'public');
+        }
 
         Portfolio::create([
             'title' => $request->title,
             'description' => $request->description,
             'image' => $imagePath,
             'category' => $request->category,
+            'kml_file' => $kmlFilePath,
         ]);
 
         return redirect()->route('admin.portfolio.index')->with('success', 'Portfolio created successfully.');
@@ -53,6 +59,7 @@ class PortfolioController extends Controller
             'description' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
             'category' => 'required|string|max:255',
+            'kml_file' => 'nullable|file|mimetypes:application/vnd.google-earth.kml+xml,text/xml|max:10240',
         ]);
 
         $data = $request->only(['title', 'description', 'category']);
@@ -62,6 +69,13 @@ class PortfolioController extends Controller
                 Storage::disk('public')->delete($portfolio->image);
             }
             $data['image'] = $request->file('image')->store('portfolios', 'public');
+        }
+        
+        if ($request->hasFile('kml_file')) {
+            if ($portfolio->kml_file) {
+                Storage::disk('public')->delete($portfolio->kml_file);
+            }
+            $data['kml_file'] = $request->file('kml_file')->store('kml_files', 'public');
         }
 
         $portfolio->update($data);
@@ -73,6 +87,9 @@ class PortfolioController extends Controller
     {
         if ($portfolio->image) {
             Storage::disk('public')->delete($portfolio->image);
+        }
+        if ($portfolio->kml_file) {
+            Storage::disk('public')->delete($portfolio->kml_file);
         }
         $portfolio->delete();
         

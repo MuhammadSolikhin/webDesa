@@ -46,6 +46,22 @@
                             <x-input-error class="mt-2" :messages="$errors->get('image')" />
                         </div>
 
+                        <div>
+                            <x-input-label for="kml_file" value="{{ __('KML File (Biarkan kosong jika tidak ingin mengubah)') }}" />
+                            
+                            @if($tourPackage->kml_file)
+                                <div class="mt-2 mb-4">
+                                    <p class="text-sm text-gray-500 mb-2">File Saat Ini: {{ basename($tourPackage->kml_file) }}</p>
+                                    <a href="{{ route('admin.tour-package.kml', $tourPackage) }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">
+                                        Kelola Konten KML (Edit Nama & Urutan)
+                                    </a>
+                                </div>
+                            @endif
+                            
+                            <input id="kml_file" name="kml_file" type="file" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" accept=".kml" />
+                            <x-input-error class="mt-2" :messages="$errors->get('kml_file')" />
+                        </div>
+
                         <div class="flex items-center gap-4">
                             <x-primary-button>{{ __('Simpan Perubahan') }}</x-primary-button>
                             <a href="{{ route('admin.tour-package.index') }}" class="text-sm text-gray-600 hover:text-gray-900">{{ __('Batal') }}</a>

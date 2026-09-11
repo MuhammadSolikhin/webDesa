@@ -7,7 +7,9 @@ use App\Http\Controllers\Admin\TransactionController as AdminTransactionControll
 use App\Http\Controllers\User\TransactionController as UserTransactionController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [\App\Http\Controllers\HomeController::class, 'index']);
+Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/portfolio/{portfolio}', [\App\Http\Controllers\HomeController::class, 'portfolio'])->name('portfolio.show');
+Route::get('/tour-package/{tourPackage}', [\App\Http\Controllers\HomeController::class, 'tourPackage'])->name('tour-package.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     
@@ -40,6 +42,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/admin/landing', [\App\Http\Controllers\Admin\LandingPageController::class, 'edit'])->name('admin.landing.edit');
         Route::post('/admin/landing', [\App\Http\Controllers\Admin\LandingPageController::class, 'update'])->name('admin.landing.update');
         
+        Route::get('/admin/tour-package/{tourPackage}/kml', [\App\Http\Controllers\Admin\TourPackageController::class, 'editKml'])->name('admin.tour-package.kml');
+        Route::post('/admin/tour-package/{tourPackage}/kml', [\App\Http\Controllers\Admin\TourPackageController::class, 'updateKml'])->name('admin.tour-package.kml.update');
         Route::resource('/admin/tour-package', \App\Http\Controllers\Admin\TourPackageController::class)->names('admin.tour-package');
         Route::resource('/admin/menu', \App\Http\Controllers\Admin\MenuController::class)->names('admin.menu');
         Route::post('/admin/menu/reorder', [\App\Http\Controllers\Admin\MenuController::class, 'reorder'])->name('admin.menu.reorder');

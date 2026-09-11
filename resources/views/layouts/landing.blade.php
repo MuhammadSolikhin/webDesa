@@ -33,7 +33,7 @@
   * Updated: Aug 07 2024 with Bootstrap v5.3.3
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+  @stack('styles')
 </head>
 
 <body class="index-page">
@@ -176,6 +176,7 @@
   <!-- Main JS File -->
   <script src="{{ asset('landingPage/js/main.js') }}"></script>
 
+  @stack('scripts')
 </body>
 
 </html>
