@@ -26,13 +26,16 @@ class TourPackageController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'nullable|numeric|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|array',
+            'image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'kml_file' => 'nullable|file|mimetypes:application/vnd.google-earth.kml+xml,text/xml|max:10240',
         ]);
 
-        $imagePath = null;
+        $imagePaths = [];
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('tour_packages', 'public');
+            foreach ($request->file('image') as $file) {
+                $imagePaths[] = $file->store('tour_packages', 'public');
+            }
         }
 
         $kmlFilePath = null;
@@ -44,7 +47,7 @@ class TourPackageController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
-            'image' => $imagePath,
+            'image' => $imagePaths,
             'kml_file' => $kmlFilePath,
         ]);
 
@@ -67,16 +70,25 @@ class TourPackageController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'nullable|numeric|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|array',
+            'image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'kml_file' => 'nullable|file|mimetypes:application/vnd.google-earth.kml+xml,text/xml|max:10240',
         ]);
 
         if ($request->hasFile('image')) {
-            if ($tourPackage->image && Storage::disk('public')->exists($tourPackage->image)) {
-                Storage::disk('public')->delete($tourPackage->image);
+            if (!empty($tourPackage->image)) {
+                $oldImages = is_array($tourPackage->image) ? $tourPackage->image : [$tourPackage->image];
+                foreach ($oldImages as $oldImage) {
+                    if (Storage::disk('public')->exists($oldImage)) {
+                        Storage::disk('public')->delete($oldImage);
+                    }
+                }
             }
-            $imagePath = $request->file('image')->store('tour_packages', 'public');
-            $tourPackage->image = $imagePath;
+            $imagePaths = [];
+            foreach ($request->file('image') as $file) {
+                $imagePaths[] = $file->store('tour_packages', 'public');
+            }
+            $tourPackage->image = $imagePaths;
         }
 
         if ($request->hasFile('kml_file')) {
@@ -97,8 +109,13 @@ class TourPackageController extends Controller
 
     public function destroy(TourPackage $tourPackage)
     {
-        if ($tourPackage->image && Storage::disk('public')->exists($tourPackage->image)) {
-            Storage::disk('public')->delete($tourPackage->image);
+        if (!empty($tourPackage->image)) {
+            $oldImages = is_array($tourPackage->image) ? $tourPackage->image : [$tourPackage->image];
+            foreach ($oldImages as $oldImage) {
+                if (Storage::disk('public')->exists($oldImage)) {
+                    Storage::disk('public')->delete($oldImage);
+                }
+            }
         }
         if ($tourPackage->kml_file && Storage::disk('public')->exists($tourPackage->kml_file)) {
             Storage::disk('public')->delete($tourPackage->kml_file);

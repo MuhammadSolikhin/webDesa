@@ -70,8 +70,36 @@
           <div class="col-lg-8">
             <div class="portfolio-details-slider swiper init-swiper">
               <div class="align-items-center">
-                @if($tourPackage->image)
-                    <img src="{{ asset('storage/' . $tourPackage->image) }}" alt="{{ $tourPackage->name }}" class="img-fluid rounded shadow" style="width: 100%; object-fit: cover; max-height: 500px;">
+                @if(!empty($tourPackage->image))
+                    @php
+                        $images = is_array($tourPackage->image) ? $tourPackage->image : [$tourPackage->image];
+                    @endphp
+                    @if(count($images) > 1)
+                        <div id="tourPackageGallery" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-indicators">
+                                @foreach($images as $index => $img)
+                                    <button type="button" data-bs-target="#tourPackageGallery" data-bs-slide-to="{{ $index }}" class="{{ $index === 0 ? 'active' : '' }}" aria-current="{{ $index === 0 ? 'true' : 'false' }}" aria-label="Slide {{ $index + 1 }}"></button>
+                                @endforeach
+                            </div>
+                            <div class="carousel-inner rounded shadow">
+                                @foreach($images as $index => $img)
+                                    <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                        <img src="{{ asset('storage/' . $img) }}" class="d-block w-100" alt="{{ $tourPackage->name }}" style="object-fit: cover; height: 500px;">
+                                    </div>
+                                @endforeach
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#tourPackageGallery" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#tourPackageGallery" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    @else
+                        <img src="{{ asset('storage/' . $images[0]) }}" alt="{{ $tourPackage->name }}" class="img-fluid rounded shadow" style="width: 100%; object-fit: cover; max-height: 500px;">
+                    @endif
                 @else
                     <div class="bg-light d-flex align-items-center justify-content-center rounded shadow" style="height: 500px;">
                         <span class="text-muted"><i class="bi bi-image" style="font-size: 5rem;"></i></span>

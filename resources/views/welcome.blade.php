@@ -129,11 +129,20 @@
 
             @foreach($portfolios as $portfolio)
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item {{ $portfolio->category }}">
-              <img src="{{ Storage::url($portfolio->image) }}" class="img-fluid" alt="{{ $portfolio->title }}">
+              @php
+                  $images = is_array($portfolio->image) ? $portfolio->image : (empty($portfolio->image) ? [] : [$portfolio->image]);
+                  $firstImage = count($images) > 0 ? $images[0] : '';
+              @endphp
+              <img src="{{ Storage::url($firstImage) }}" class="img-fluid" alt="{{ $portfolio->title }}">
               <div class="portfolio-info">
                 <h4>{{ $portfolio->title }}</h4>
                 <p>{{ $portfolio->description }}</p>
-                <a href="{{ Storage::url($portfolio->image) }}" title="{{ $portfolio->title }}" data-gallery="portfolio-gallery-{{ str_replace('filter-', '', $portfolio->category) }}" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="{{ Storage::url($firstImage) }}" title="{{ $portfolio->title }}" data-gallery="portfolio-gallery-{{ $portfolio->id }}" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                @if(count($images) > 1)
+                  @foreach(array_slice($images, 1) as $img)
+                    <a href="{{ Storage::url($img) }}" title="{{ $portfolio->title }}" data-gallery="portfolio-gallery-{{ $portfolio->id }}" class="glightbox" style="display: none;"></a>
+                  @endforeach
+                @endif
               </div>
             </div><!-- End Portfolio Item -->
             @endforeach
@@ -162,8 +171,17 @@
           @foreach($tourPackages as $package)
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ 100 * $loop->iteration }}">
             <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden" style="transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 15px 30px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 .125rem .25rem rgba(0,0,0,.075)'">
-              @if($package->image)
-              <img src="{{ asset('storage/' . $package->image) }}" class="card-img-top" alt="{{ $package->name }}" style="height: 250px; object-fit: cover;">
+              @if(!empty($package->image))
+                  @php
+                      $images = is_array($package->image) ? $package->image : [$package->image];
+                  @endphp
+                  @if(count($images) > 0)
+                      <img src="{{ asset('storage/' . $images[0]) }}" class="card-img-top" alt="{{ $package->name }}" style="height: 250px; object-fit: cover;">
+                  @else
+                      <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 250px;">
+                          <span class="text-muted"><i class="bi bi-image text-secondary" style="font-size: 3rem;"></i></span>
+                      </div>
+                  @endif
               @else
               <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 250px;">
                   <span class="text-muted"><i class="bi bi-image text-secondary" style="font-size: 3rem;"></i></span>

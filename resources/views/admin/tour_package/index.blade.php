@@ -36,8 +36,15 @@
                                 @forelse($tourPackages as $package)
                                     <tr>
                                         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                            @if($package->image)
-                                                <img src="{{ asset('storage/' . $package->image) }}" alt="{{ $package->name }}" class="h-16 w-16 object-cover rounded-md">
+                                            @if(!empty($package->image))
+                                                @php
+                                                    $images = is_array($package->image) ? $package->image : [$package->image];
+                                                @endphp
+                                                @if(count($images) > 0)
+                                                    <img src="{{ asset('storage/' . $images[0]) }}" alt="{{ $package->name }}" class="h-16 w-16 object-cover rounded-md">
+                                                @else
+                                                    <span class="text-gray-400 italic">Tidak ada gambar</span>
+                                                @endif
                                             @else
                                                 <span class="text-gray-400 italic">Tidak ada gambar</span>
                                             @endif

@@ -25,23 +25,23 @@ class PortfolioController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'required|image|max:2048',
+            'image' => 'required|array',
+            'image.*' => 'required|image|max:2048',
             'category' => 'required|string|max:255',
-            'kml_file' => 'nullable|file|mimetypes:application/vnd.google-earth.kml+xml,text/xml|max:10240',
         ]);
 
-        $imagePath = $request->file('image')->store('portfolios', 'public');
-        $kmlFilePath = null;
-        if ($request->hasFile('kml_file')) {
-            $kmlFilePath = $request->file('kml_file')->store('kml_files', 'public');
+        $imagePaths = [];
+        if ($request->hasFile('image')) {
+            foreach ($request->file('image') as $file) {
+                $imagePaths[] = $file->store('portfolios', 'public');
+            }
         }
 
         Portfolio::create([
             'title' => $request->title,
             'description' => $request->description,
-            'image' => $imagePath,
+            'image' => $imagePaths,
             'category' => $request->category,
-            'kml_file' => $kmlFilePath,
         ]);
 
         return redirect()->route('admin.portfolio.index')->with('success', 'Portfolio created successfully.');
@@ -57,25 +57,27 @@ class PortfolioController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|max:2048',
+            'image' => 'nullable|array',
+            'image.*' => 'nullable|image|max:2048',
             'category' => 'required|string|max:255',
-            'kml_file' => 'nullable|file|mimetypes:application/vnd.google-earth.kml+xml,text/xml|max:10240',
         ]);
 
         $data = $request->only(['title', 'description', 'category']);
 
         if ($request->hasFile('image')) {
-            if ($portfolio->image) {
-                Storage::disk('public')->delete($portfolio->image);
+            if (!empty($portfolio->image)) {
+                $oldImages = is_array($portfolio->image) ? $portfolio->image : [$portfolio->image];
+                foreach ($oldImages as $oldImage) {
+                    if (Storage::disk('public')->exists($oldImage)) {
+                        Storage::disk('public')->delete($oldImage);
+                    }
+                }
             }
-            $data['image'] = $request->file('image')->store('portfolios', 'public');
-        }
-        
-        if ($request->hasFile('kml_file')) {
-            if ($portfolio->kml_file) {
-                Storage::disk('public')->delete($portfolio->kml_file);
+            $imagePaths = [];
+            foreach ($request->file('image') as $file) {
+                $imagePaths[] = $file->store('portfolios', 'public');
             }
-            $data['kml_file'] = $request->file('kml_file')->store('kml_files', 'public');
+            $data['image'] = $imagePaths;
         }
 
         $portfolio->update($data);
@@ -85,11 +87,13 @@ class PortfolioController extends Controller
 
     public function destroy(Portfolio $portfolio)
     {
-        if ($portfolio->image) {
-            Storage::disk('public')->delete($portfolio->image);
-        }
-        if ($portfolio->kml_file) {
-            Storage::disk('public')->delete($portfolio->kml_file);
+        if (!empty($portfolio->image)) {
+            $oldImages = is_array($portfolio->image) ? $portfolio->image : [$portfolio->image];
+            foreach ($oldImages as $oldImage) {
+                if (Storage::disk('public')->exists($oldImage)) {
+                    Storage::disk('public')->delete($oldImage);
+                }
+            }
         }
         $portfolio->delete();
         

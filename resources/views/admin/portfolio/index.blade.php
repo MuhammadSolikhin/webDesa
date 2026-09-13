@@ -35,7 +35,18 @@
                                 @foreach($portfolios as $portfolio)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                        <img src="{{ Storage::url($portfolio->image) }}" alt="{{ $portfolio->title }}" class="h-16 w-16 object-cover rounded">
+                                        @if(!empty($portfolio->image))
+                                            @php
+                                                $images = is_array($portfolio->image) ? $portfolio->image : [$portfolio->image];
+                                            @endphp
+                                            @if(count($images) > 0)
+                                                <img src="{{ Storage::url($images[0]) }}" alt="{{ $portfolio->title }}" class="h-16 w-16 object-cover rounded">
+                                            @else
+                                                <span class="text-gray-400 italic">Tidak ada gambar</span>
+                                            @endif
+                                        @else
+                                            <span class="text-gray-400 italic">Tidak ada gambar</span>
+                                        @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">{{ $portfolio->title }}</td>
                                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">{{ $portfolio->category }}</td>
