@@ -28,6 +28,7 @@ class PortfolioController extends Controller
             'image' => 'required|array',
             'image.*' => 'required|image|max:2048',
             'category' => 'required|string|max:255',
+            'map_file' => 'nullable|file|mimes:zip,json,geojson,kml,xml|max:51200',
         ]);
 
         $imagePaths = [];
@@ -37,11 +38,14 @@ class PortfolioController extends Controller
             }
         }
 
+        $mapFilePath = $this->processMapFile($request);
+
         Portfolio::create([
             'title' => $request->title,
             'description' => $request->description,
             'image' => $imagePaths,
             'category' => $request->category,
+            'map_file' => $mapFilePath,
         ]);
 
         return redirect()->route('admin.portfolio.index')->with('success', 'Portfolio created successfully.');
@@ -60,6 +64,7 @@ class PortfolioController extends Controller
             'image' => 'nullable|array',
             'image.*' => 'nullable|image|max:2048',
             'category' => 'required|string|max:255',
+            'map_file' => 'nullable|file|mimes:zip,json,geojson,kml,xml|max:51200',
         ]);
 
         $data = $request->only(['title', 'description', 'category']);
@@ -80,6 +85,10 @@ class PortfolioController extends Controller
             $data['image'] = $imagePaths;
         }
 
+        if ($request->hasFile('map_file')) {
+            $data['map_file'] = $this->processMapFile($request, $portfolio->map_file);
+        }
+
         $portfolio->update($data);
 
         return redirect()->route('admin.portfolio.index')->with('success', 'Portfolio updated successfully.');
@@ -95,8 +104,76 @@ class PortfolioController extends Controller
                 }
             }
         }
+        
+        if ($portfolio->map_file) {
+            $this->deleteMapFile($portfolio->map_file);
+        }
+        
         $portfolio->delete();
         
         return redirect()->route('admin.portfolio.index')->with('success', 'Portfolio deleted successfully.');
+    }
+
+    private function processMapFile($request, $currentMapFile = null)
+    {
+        if (!$request->hasFile('map_file')) {
+            return $currentMapFile;
+        }
+
+        $file = $request->file('map_file');
+        $extension = $file->getClientOriginalExtension();
+
+        if ($currentMapFile) {
+            $this->deleteMapFile($currentMapFile);
+        }
+
+        if ($extension === 'zip') {
+            $zipPath = $file->store('map_files/temp', 'public');
+            $extractDir = 'map_files/html_maps/' . uniqid();
+            $fullExtractPath = storage_path('app/public/' . $extractDir);
+
+            $zip = new \ZipArchive;
+            if ($zip->open(storage_path('app/public/' . $zipPath)) === TRUE) {
+                $zip->extractTo($fullExtractPath);
+                $zip->close();
+                Storage::disk('public')->delete($zipPath);
+
+                $indexPath = $this->findIndexHtml($fullExtractPath);
+                if ($indexPath) {
+                    $publicPath = storage_path('app/public/');
+                    $relativePath = str_replace($publicPath, '', $indexPath);
+                    return str_replace('\\', '/', $relativePath);
+                }
+            }
+            return null;
+        }
+
+        return $file->store('map_files', 'public');
+    }
+
+    private function findIndexHtml($dir)
+    {
+        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir));
+        foreach ($iterator as $file) {
+            if ($file->isFile() && $file->getFilename() === 'index.html') {
+                return $file->getPathname();
+            }
+        }
+        return null;
+    }
+
+    private function deleteMapFile($path)
+    {
+        if (!$path) return;
+
+        if (str_ends_with(strtolower($path), 'index.html')) {
+            $parts = explode('/', str_replace('\\', '/', $path));
+            if (isset($parts[0], $parts[1], $parts[2]) && $parts[0] === 'map_files' && $parts[1] === 'html_maps') {
+                $dirToDelete = $parts[0] . '/' . $parts[1] . '/' . $parts[2];
+                Storage::disk('public')->deleteDirectory($dirToDelete);
+            }
+        } else {
+            Storage::disk('public')->delete($path);
+        }
     }
 }

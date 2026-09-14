@@ -45,7 +45,13 @@
                             <x-input-error class="mt-2" :messages="$errors->get('image')" />
                         </div>
 
-
+                        <!-- Map File -->
+                        <div>
+                            <x-input-label for="map_file" :value="__('Map File (ZIP qgis2web / GeoJSON / KML)')" />
+                            <input id="map_file" name="map_file" type="file" accept=".zip,.geojson,.json,.kml,.xml" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
+                            <p class="mt-1 text-sm text-gray-500">Opsional: Upload file <b>.zip</b> hasil ekspor qgis2web, atau file .geojson / .kml dari QGIS.</p>
+                            <x-input-error class="mt-2" :messages="$errors->get('map_file')" />
+                        </div>
 
                         <div class="flex items-center justify-end mt-4 gap-4">
                             <a href="{{ route('admin.portfolio.index') }}" class="text-sm text-gray-600 hover:text-gray-900 underline">Batal</a>

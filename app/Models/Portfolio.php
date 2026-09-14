@@ -9,7 +9,7 @@ class Portfolio extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'image', 'category'];
+    protected $fillable = ['title', 'description', 'image', 'category', 'map_file'];
 
     protected $casts = [
         'image' => 'array',

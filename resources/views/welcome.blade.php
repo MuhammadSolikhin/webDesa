@@ -143,6 +143,7 @@
                     <a href="{{ Storage::url($img) }}" title="{{ $portfolio->title }}" data-gallery="portfolio-gallery-{{ $portfolio->id }}" class="glightbox" style="display: none;"></a>
                   @endforeach
                 @endif
+                <a href="{{ route('portfolio.show', $portfolio) }}" title="Lihat Detail & Peta" class="details-link"><i class="bi bi-info-circle"></i></a>
               </div>
             </div><!-- End Portfolio Item -->
             @endforeach

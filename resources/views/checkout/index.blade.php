@@ -19,8 +19,17 @@
 
                     <div class="flex flex-col md:flex-row gap-8">
                         <div class="w-full md:w-1/3">
-                            @if($package->image)
-                                <img src="{{ asset('storage/' . $package->image) }}" alt="{{ $package->name }}" class="w-full h-auto rounded-lg shadow-md object-cover">
+                            @if(!empty($package->image))
+                                @php
+                                    $images = is_array($package->image) ? $package->image : [$package->image];
+                                @endphp
+                                @if(count($images) > 0)
+                                    <img src="{{ asset('storage/' . $images[0]) }}" alt="{{ $package->name }}" class="w-full h-auto rounded-lg shadow-md object-cover">
+                                @else
+                                    <div class="w-full h-48 bg-gray-200 rounded-lg flex items-center justify-center">
+                                        <span class="text-gray-500">Tidak ada gambar</span>
+                                    </div>
+                                @endif
                             @else
                                 <div class="w-full h-48 bg-gray-200 rounded-lg flex items-center justify-center">
                                     <span class="text-gray-500">Tidak ada gambar</span>

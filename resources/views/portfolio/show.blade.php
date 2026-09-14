@@ -46,17 +46,72 @@
           <div class="col-lg-8">
             <div class="portfolio-details-slider swiper init-swiper">
               <div class="align-items-center">
-                @if($portfolio->image)
-                    <img src="{{ Storage::url($portfolio->image) }}" alt="{{ $portfolio->title }}" class="img-fluid rounded shadow" style="width: 100%; object-fit: cover;">
+                @if(!empty($portfolio->image))
+                    @php
+                        $images = is_array($portfolio->image) ? $portfolio->image : [$portfolio->image];
+                    @endphp
+                    @if(count($images) > 1)
+                        <div id="portfolioGallery" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-indicators">
+                                @foreach($images as $index => $img)
+                                    <button type="button" data-bs-target="#portfolioGallery" data-bs-slide-to="{{ $index }}" class="{{ $index === 0 ? 'active' : '' }}" aria-current="{{ $index === 0 ? 'true' : 'false' }}" aria-label="Slide {{ $index + 1 }}"></button>
+                                @endforeach
+                            </div>
+                            <div class="carousel-inner rounded shadow">
+                                @foreach($images as $index => $img)
+                                    <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                        <img src="{{ Storage::url($img) }}" class="d-block w-100" alt="{{ $portfolio->title }}" style="object-fit: cover; max-height: 500px;">
+                                    </div>
+                                @endforeach
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#portfolioGallery" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#portfolioGallery" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    @else
+                        @if(count($images) > 0)
+                            <img src="{{ Storage::url($images[0]) }}" alt="{{ $portfolio->title }}" class="img-fluid rounded shadow" style="width: 100%; object-fit: cover; max-height: 500px;">
+                        @endif
+                    @endif
                 @endif
               </div>
             </div>
-            
+
             <div class="mt-5">
                 <h3>Peta Lokasi</h3>
-                <div id="map"></div>
-                @if(!$portfolio->kml_file)
-                    <div class="alert alert-info mt-2">Peta KML belum tersedia untuk objek wisata ini.</div>
+                @if($portfolio->map_file)
+                    @php
+                        $mapUrl = Storage::url($portfolio->map_file);
+                        $isHtml = str_ends_with(strtolower($portfolio->map_file), '.html');
+                    @endphp
+                    
+                    @if($isHtml)
+                        <div id="map-container" class="map-container bg-light d-flex align-items-center justify-content-center flex-column" style="width: 100%; height: 500px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); cursor: pointer; border: 2px dashed #ccc;" onclick="loadMap()">
+                            <div class="text-center p-4">
+                                <i class="bi bi-map" style="font-size: 3rem; color: #007bff;"></i>
+                                <h4 class="mt-3">Klik untuk Memuat Peta Interaktif</h4>
+                                <p class="text-muted">Mencegah loading lambat akibat banyaknya data peta.</p>
+                                <button class="btn btn-primary mt-2">Tampilkan Peta</button>
+                            </div>
+                        </div>
+                        <script>
+                            function loadMap() {
+                                const container = document.getElementById('map-container');
+                                container.onclick = null;
+                                container.style.border = 'none';
+                                container.innerHTML = '<iframe src="{{ $mapUrl }}" width="100%" height="100%" frameborder="0" style="border:0;" allowfullscreen></iframe>';
+                            }
+                        </script>
+                    @else
+                        <div id="map"></div>
+                    @endif
+                @else
+                    <div class="alert alert-info mt-2">Peta belum tersedia untuk objek wisata ini.</div>
                 @endif
             </div>
           </div>
@@ -92,37 +147,43 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Default center if no KML (e.g., center of Indonesia or your specific region)
+            @if($portfolio->map_file && !str_ends_with(strtolower($portfolio->map_file), '.html'))
+            // Default center
             var map = L.map('map').setView([-0.789275, 113.921327], 5);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                attribution: '&copy; OpenStreetMap contributors'
             }).addTo(map);
 
-            @if($portfolio->kml_file)
-                var kmlUrl = "{{ Storage::url($portfolio->kml_file) }}";
-                
-                // Add KML layer using omnivore
-                var customLayer = L.geoJson(null, {
-                    style: function(feature) {
-                        return { color: '#007bff', weight: 3 };
-                    },
-                    onEachFeature: function (feature, layer) {
-                        if (feature.properties && feature.properties.name) {
-                            layer.bindPopup(feature.properties.name);
-                        }
+            var mapUrl = "{{ Storage::url($portfolio->map_file) }}";
+            var ext = mapUrl.split('.').pop().toLowerCase();
+            
+            var customLayer = L.geoJson(null, {
+                style: function(feature) {
+                    return { color: '#007bff', weight: 3, fillColor: '#007bff', fillOpacity: 0.2 };
+                },
+                onEachFeature: function (feature, layer) {
+                    if (feature.properties && feature.properties.name) {
+                        layer.bindPopup(feature.properties.name);
                     }
-                });
+                }
+            });
 
-                var runLayer = omnivore.kml(kmlUrl, null, customLayer)
-                    .on('ready', function() {
-                        map.fitBounds(runLayer.getBounds());
-                    })
-                    .on('error', function(e) {
-                        console.error("Error loading KML: ", e);
-                        document.getElementById('map').insertAdjacentHTML('afterend', '<div class="alert alert-danger mt-2">Gagal memuat file KML.</div>');
-                    })
+            if (ext === 'kml') {
+                var runLayer = omnivore.kml(mapUrl, null, customLayer)
+                    .on('ready', function() { map.fitBounds(runLayer.getBounds()); })
+                    .on('error', function(e) { console.error("KML Error: ", e); })
                     .addTo(map);
+            } else if (ext === 'json' || ext === 'geojson') {
+                fetch(mapUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        customLayer.addData(data);
+                        customLayer.addTo(map);
+                        map.fitBounds(customLayer.getBounds());
+                    })
+                    .catch(err => console.error("GeoJSON Error: ", err));
+            }
             @endif
         });
     </script>

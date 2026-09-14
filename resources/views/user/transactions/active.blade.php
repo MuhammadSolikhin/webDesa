@@ -15,8 +15,17 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             @foreach($transactions as $trx)
                             <div class="border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                                @if($trx->tourPackage && $trx->tourPackage->image)
-                                    <img src="{{ asset('storage/' . $trx->tourPackage->image) }}" alt="Package Image" class="w-full h-48 object-cover">
+                                @if(!empty($trx->tourPackage) && !empty($trx->tourPackage->image))
+                                    @php
+                                        $images = is_array($trx->tourPackage->image) ? $trx->tourPackage->image : [$trx->tourPackage->image];
+                                    @endphp
+                                    @if(count($images) > 0)
+                                        <img src="{{ asset('storage/' . $images[0]) }}" alt="Package Image" class="w-full h-48 object-cover">
+                                    @else
+                                        <div class="w-full h-48 bg-gray-100 flex items-center justify-center">
+                                            <span class="text-gray-400">Tidak ada gambar</span>
+                                        </div>
+                                    @endif
                                 @else
                                     <div class="w-full h-48 bg-gray-100 flex items-center justify-center">
                                         <span class="text-gray-400">Tidak ada gambar</span>
