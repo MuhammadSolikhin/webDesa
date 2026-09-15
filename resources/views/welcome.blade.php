@@ -91,7 +91,7 @@
               <div class="icon">
                 {!! $service->icon !!}
               </div>
-              <a href="service-details.html" class="stretched-link">
+              <a href="{{ route('service.show', $service) }}" class="stretched-link">
                 <h3>{{ $service->title }}</h3>
               </a>
               <p>{{ $service->description }}</p>
