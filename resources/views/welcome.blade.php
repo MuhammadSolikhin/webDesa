@@ -49,7 +49,7 @@
           <div class="col-lg-7" data-aos="fade-up" data-aos-delay="100">
             <h2 class="inner-title">{{ $settings['about_title'] ?? '' }}</h2>
             <div class="our-story">
-              <h4>Profil Desa</h4>
+              <h4>Profil Kec. Ketungau Hulu</h4>
               <h3>{{ $settings['about_subtitle'] ?? '' }}</h3>
               <p>{{ $settings['about_description'] ?? '' }}</p>
               <ul>

@@ -109,28 +109,10 @@
                             <h4 class="mb-4 font-medium text-gray-900">Social Media Links</h4>
                             
                             <div class="space-y-4">
-                                <!-- Contact Twitter -->
-                                <div>
-                                    <x-input-label for="contact_twitter" :value="__('Twitter URL')" />
-                                    <x-text-input id="contact_twitter" name="contact_twitter" type="url" class="mt-1 block w-full" :value="$settings['contact_twitter'] ?? ''" />
-                                </div>
-
-                                <!-- Contact Facebook -->
-                                <div>
-                                    <x-input-label for="contact_facebook" :value="__('Facebook URL')" />
-                                    <x-text-input id="contact_facebook" name="contact_facebook" type="url" class="mt-1 block w-full" :value="$settings['contact_facebook'] ?? ''" />
-                                </div>
-
                                 <!-- Contact Instagram -->
                                 <div>
                                     <x-input-label for="contact_instagram" :value="__('Instagram URL')" />
                                     <x-text-input id="contact_instagram" name="contact_instagram" type="url" class="mt-1 block w-full" :value="$settings['contact_instagram'] ?? ''" />
-                                </div>
-
-                                <!-- Contact LinkedIn -->
-                                <div>
-                                    <x-input-label for="contact_linkedin" :value="__('LinkedIn URL')" />
-                                    <x-text-input id="contact_linkedin" name="contact_linkedin" type="url" class="mt-1 block w-full" :value="$settings['contact_linkedin'] ?? ''" />
                                 </div>
                             </div>
                         </div>
@@ -139,7 +121,6 @@
                             <x-primary-button>{{ __('Save') }}</x-primary-button>
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>

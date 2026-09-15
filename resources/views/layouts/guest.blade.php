@@ -22,7 +22,7 @@
                 <div class="absolute inset-0 bg-cover bg-center opacity-60" style="background-image: url('https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');"></div>
                 <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent"></div>
                 <div class="relative z-10 text-center px-12">
-                    <h1 class="text-5xl font-bold text-white mb-6 tracking-tight leading-tight">Selamat Datang di<br>Portal Desa</h1>
+                    <h1 class="text-5xl font-bold text-white mb-6 tracking-tight leading-tight">Selamat Datang di<br>Portal KT Ketungau Hulu</h1>
                     <p class="text-xl text-gray-200 font-light">Jelajahi keindahan alam, kekayaan budaya, dan kearifan lokal bersama kami.</p>
                 </div>
             </div>

@@ -3,7 +3,7 @@
     <div class="px-4 flex items-center justify-between">
         <a href="{{ Auth::user()->role === 'admin' ? route('dashboard') : route('user.dashboard') }}" class="text-2xl font-extrabold text-white flex items-center space-x-2">
             <x-application-logo class="block h-8 w-auto fill-current text-white" />
-            <span>{{ Auth::user()->role === 'admin' ? 'Admin' : 'Portal Desa' }}</span>
+            <span>{{ Auth::user()->role === 'admin' ? 'Admin' : 'Portal KT Ketungau Hulu' }}</span>
         </a>
         <button @click="sidebarOpen = false" class="md:hidden text-gray-300 hover:text-white focus:outline-none">
             <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">

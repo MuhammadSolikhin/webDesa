@@ -4,13 +4,13 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Index - Company Bootstrap Template</title>
+  <title>Ekowisata Kawasan Transmigrasi Ketungau Hulu</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
 
   <!-- Favicons -->
-  <link href="{{ asset('landingPage/img/favicon.png') }}" rel="icon">
-  <link href="{{ asset('landingPage/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+  <link href="{{ asset('landingPage/img/logosintang.png') }}" rel="icon" type="image/png">
+  <link href="{{ asset('landingPage/img/logosintang.png') }}" rel="apple-touch-icon">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
@@ -43,9 +43,8 @@
     <div class="container position-relative d-flex align-items-center">
 
       <a href="{{ url('/') }}" class="logo d-flex align-items-center me-auto">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
-        <!-- <img src="{{ asset('landingPage/img/logo.png') }}" alt=""> -->
-        <h1 class="sitename">Profil Desa</h1><span>.</span>
+        <img src="{{ asset('landingPage/img/logosintang.png') }}" alt="Logo Kementerian Transmigrasi">
+        <h1 class="sitename">Ketungau Hulu</h1><span>.</span>
       </a>
 
       <nav id="navmenu" class="navmenu">
@@ -94,7 +93,7 @@
       <div class="row gy-4">
         <div class="col-lg-4 col-md-6 footer-about">
           <a href="{{ url('/') }}" class="logo d-flex align-items-center">
-            <span class="sitename">Profil Desa</span>
+            <span class="sitename">Kawasan Transmigrasi</span>
           </a>
           <div class="footer-contact pt-3">
             <p>{!! nl2br(e($settings['contact_address'] ?? "Jl. Balai Desa No. 1\nKecamatan, Kabupaten, Kode Pos")) !!}</p>
@@ -146,13 +145,12 @@
     </div>
 
     <div class="container copyright text-center mt-4">
-      <p>© <span>Copyright</span> <strong class="px-1 sitename">Pemerintah Desa</strong> <span>All Rights Reserved</span></p>
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">Tim Ekspedisi Patriot 2026</strong> <span>All Rights Reserved</span></p>
       <div class="credits">
         <!-- All the links in the footer should remain intact. -->
         <!-- You can delete the links only if you've purchased the pro version. -->
         <!-- Licensing information: https://bootstrapmade.com/license/ -->
         <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> Distributed by <a href="https://themewagon.com">ThemeWagon</a>
       </div>
     </div>
 
