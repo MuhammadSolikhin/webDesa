@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/portfolio/{portfolio}', [\App\Http\Controllers\HomeController::class, 'portfolio'])->name('portfolio.show');
 Route::get('/tour-package/{tourPackage}', [\App\Http\Controllers\HomeController::class, 'tourPackage'])->name('tour-package.show');
+Route::get('/service/{service}', [\App\Http\Controllers\HomeController::class, 'service'])->name('service.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     

@@ -33,4 +33,9 @@ class HomeController extends Controller
     {
         return view('tour-package.show', compact('tourPackage'));
     }
+
+    public function service(\App\Models\Service $service)
+    {
+        return view('service.show', compact('service'));
+    }
 }
