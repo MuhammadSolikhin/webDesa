@@ -30,7 +30,7 @@
                         <!-- Icon HTML -->
                         <div>
                             <x-input-label for="icon" :value="__('Icon HTML / Class')" />
-                            <x-text-input id="icon" name="icon" type="text" class="mt-1 block w-full" :value="old('icon')" required placeholder='<i class="bi bi-activity"></i>' />
+                            <textarea id="icon" name="icon" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="3" required placeholder='<i class="bi bi-activity"></i>'>{{ old('icon') }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('icon')" />
                         </div>
 
