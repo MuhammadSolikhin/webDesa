@@ -13,6 +13,9 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        
+        <!-- Bootstrap Icons -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen md:h-screen bg-gray-100 md:flex md:overflow-hidden" x-data="{ sidebarOpen: false }">

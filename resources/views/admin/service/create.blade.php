@@ -27,10 +27,32 @@
                             <x-input-error class="mt-2" :messages="$errors->get('description')" />
                         </div>
 
-                        <!-- Icon HTML -->
+                        <!-- Icon Selection -->
                         <div>
-                            <x-input-label for="icon" :value="__('Icon HTML / Class')" />
-                            <textarea id="icon" name="icon" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="3" required placeholder='<i class="bi bi-activity"></i>'>{{ old('icon') }}</textarea>
+                            <x-input-label for="icon" :value="__('Pilih Icon Layanan')" />
+                            <div class="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-12 gap-3 mt-2">
+                                @php
+                                    $icons = [
+                                        'bi-activity', 'bi-briefcase', 'bi-bar-chart', 'bi-binoculars', 'bi-brightness-high', 
+                                        'bi-calendar4-week', 'bi-chat-square-text', 'bi-envelope', 'bi-geo-alt', 'bi-globe', 
+                                        'bi-house', 'bi-info-circle', 'bi-map', 'bi-people', 'bi-card-checklist', 
+                                        'bi-bounding-box-circles', 'bi-camera', 'bi-clipboard-data', 'bi-clock', 'bi-cloud', 
+                                        'bi-cup-hot', 'bi-emoji-smile', 'bi-file-earmark-text', 'bi-gear', 'bi-heart', 
+                                        'bi-image', 'bi-laptop', 'bi-lightning', 'bi-megaphone', 'bi-palette', 'bi-pie-chart', 
+                                        'bi-pin-map', 'bi-shield-check', 'bi-shop', 'bi-star', 'bi-telephone', 'bi-truck', 
+                                        'bi-wallet2', 'bi-wifi'
+                                    ];
+                                @endphp
+                                @foreach($icons as $iconClass)
+                                    @php $iconVal = '<i class="bi ' . $iconClass . '"></i>'; @endphp
+                                    <label class="cursor-pointer relative">
+                                        <input type="radio" name="icon" value="{{ $iconVal }}" class="peer sr-only" {{ old('icon') == $iconVal ? 'checked' : '' }} required>
+                                        <div class="p-3 text-center border border-gray-300 rounded-md peer-checked:border-indigo-600 peer-checked:bg-indigo-50 peer-checked:text-indigo-600 hover:bg-gray-50 flex justify-center items-center transition-colors">
+                                            <i class="bi {{ $iconClass }} text-xl"></i>
+                                        </div>
+                                    </label>
+                                @endforeach
+                            </div>
                             <x-input-error class="mt-2" :messages="$errors->get('icon')" />
                         </div>
 
