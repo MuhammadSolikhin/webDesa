@@ -74,10 +74,7 @@
       </nav>
 
       <div class="header-social-links">
-        @if(!empty($settings['contact_twitter'])) <a href="{{ $settings['contact_twitter'] }}" class="twitter"><i class="bi bi-twitter-x"></i></a> @endif
-        @if(!empty($settings['contact_facebook'])) <a href="{{ $settings['contact_facebook'] }}" class="facebook"><i class="bi bi-facebook"></i></a> @endif
         @if(!empty($settings['contact_instagram'])) <a href="{{ $settings['contact_instagram'] }}" class="instagram"><i class="bi bi-instagram"></i></a> @endif
-        @if(!empty($settings['contact_linkedin'])) <a href="{{ $settings['contact_linkedin'] }}" class="linkedin"><i class="bi bi-linkedin"></i></a> @endif
       </div>
 
     </div>
@@ -101,10 +98,7 @@
             <p><strong>Email:</strong> <span>{{ $settings['contact_email'] ?? 'admin@desa.go.id' }}</span></p>
           </div>
           <div class="social-links d-flex mt-4">
-            @if(!empty($settings['contact_twitter'])) <a href="{{ $settings['contact_twitter'] }}"><i class="bi bi-twitter-x"></i></a> @endif
-            @if(!empty($settings['contact_facebook'])) <a href="{{ $settings['contact_facebook'] }}"><i class="bi bi-facebook"></i></a> @endif
             @if(!empty($settings['contact_instagram'])) <a href="{{ $settings['contact_instagram'] }}"><i class="bi bi-instagram"></i></a> @endif
-            @if(!empty($settings['contact_linkedin'])) <a href="{{ $settings['contact_linkedin'] }}"><i class="bi bi-linkedin"></i></a> @endif
           </div>
         </div>
 
