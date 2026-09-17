@@ -77,8 +77,8 @@
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
-        <h2>Fasilitas & Layanan Publik</h2>
-        <p>Berbagai layanan dan fasilitas yang tersedia untuk kemudahan masyarakat desa</p>
+        <h2>JELAJAHI KETUNGAU HULU</h2>
+        <p>Temukan keindahan alam, kekayaan budaya, dan potensi ekowisata di kawasan Ketungau Hulu.</p>
       </div><!-- End Section Title -->
 
       <div class="container">

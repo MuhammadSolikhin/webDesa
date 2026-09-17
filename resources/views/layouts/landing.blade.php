@@ -103,30 +103,27 @@
         </div>
 
         <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Tautan Berguna</h4>
+          <h4>Jelajahi</h4>
           <ul>
             <li><a href="#">Beranda</a></li>
-            <li><a href="#">Tentang Desa</a></li>
-            <li><a href="#">Layanan Publik</a></li>
-            <li><a href="#">Syarat & Ketentuan</a></li>
-            <li><a href="#">Kebijakan Privasi</a></li>
+            <li><a href="#">Tentang Ketungau Hulu</a></li>
+            <li><a href="#">Destinasi Wisata</a></li>
+            <li><a href="#">Paket Wisata</a></li>
           </ul>
         </div>
 
         <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Layanan Kami</h4>
+          <h4>Informasi Wisata</h4>
           <ul>
-            <li><a href="#">Administrasi Penduduk</a></li>
-            <li><a href="#">Surat Pengantar</a></li>
-            <li><a href="#">Informasi Bansos</a></li>
-            <li><a href="#">Perpustakaan Desa</a></li>
-            <li><a href="#">Gedung Serbaguna</a></li>
+            <li><a href="#">Wisata Alam</a></li>
+            <li><a href="#">Wisata Budaya</a></li>
+            <li><a href="#">Kuliner Lokal</a></li>
           </ul>
         </div>
 
         <div class="col-lg-4 col-md-12 footer-newsletter">
-          <h4>Berita Desa</h4>
-          <p>Berlangganan buletin kami untuk mendapatkan berita terbaru seputar desa!</p>
+          <h4>Kabar Ketungau Hulu</h4>
+          <p>Dapatkan informasi terbaru mengenai kegiatan, potensi wisata, budaya, dan pengembangan kawasan Ketungau Hulu.</p>
           <form action="forms/newsletter.php" method="post" class="php-email-form">
             <div class="newsletter-form"><input type="email" name="email"><input type="submit" value="Langganan"></div>
             <div class="loading">Loading</div>
