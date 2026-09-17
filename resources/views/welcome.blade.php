@@ -209,5 +209,38 @@
 
     </section><!-- /Tour Packages Section -->
 
+    <!-- Gallery Section -->
+    <section id="gallery" class="portfolio section">
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Galeri Foto</h2>
+        <p>Lihat lebih dekat pesona dan keindahan yang kami tawarkan melalui galeri foto kami.</p>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+        <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+          <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+            @forelse($galleries as $gallery)
+              <div class="col-lg-4 col-md-6 portfolio-item isotope-item">
+                <div class="portfolio-content h-100">
+                  <img src="{{ asset('storage/' . $gallery->image) }}" class="img-fluid" alt="{{ $gallery->title }}" style="width: 100%; height: 250px; object-fit: cover;">
+                  <div class="portfolio-info">
+                    @if($gallery->title)
+                      <h4>{{ $gallery->title }}</h4>
+                    @endif
+                    <a href="{{ asset('storage/' . $gallery->image) }}" title="{{ $gallery->title }}" data-gallery="portfolio-gallery-gallery" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  </div>
+                </div>
+              </div><!-- End Gallery Item -->
+            @empty
+              <div class="col-12 text-center">
+                <p>Belum ada foto galeri.</p>
+              </div>
+            @endforelse
+          </div><!-- End Gallery Container -->
+        </div>
+      </div>
+    </section><!-- /Gallery Section -->
+
   
 @endsection
