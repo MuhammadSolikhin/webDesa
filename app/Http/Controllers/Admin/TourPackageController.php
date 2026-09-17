@@ -27,7 +27,7 @@ class TourPackageController extends Controller
             'description' => 'nullable|string',
             'price' => 'nullable|numeric|min:0',
             'image' => 'nullable|array',
-            'image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
             'kml_file' => 'nullable|file|mimetypes:application/vnd.google-earth.kml+xml,text/xml|max:10240',
         ]);
 
@@ -71,7 +71,7 @@ class TourPackageController extends Controller
             'description' => 'nullable|string',
             'price' => 'nullable|numeric|min:0',
             'image' => 'nullable|array',
-            'image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
             'kml_file' => 'nullable|file|mimetypes:application/vnd.google-earth.kml+xml,text/xml|max:10240',
         ]);
 
