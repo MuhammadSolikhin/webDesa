@@ -36,6 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 'portfoliosCount' => \App\Models\Portfolio::count(),
                 'tourPackagesCount' => \App\Models\TourPackage::count(),
                 'heroesCount' => \App\Models\Hero::count(),
+                'galleriesCount' => \App\Models\Gallery::count(),
             ];
             return view('dashboard', $data);
         })->name('dashboard');
@@ -51,6 +52,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('/admin/hero', \App\Http\Controllers\Admin\HeroController::class)->names('admin.hero');
         Route::resource('/admin/service', \App\Http\Controllers\Admin\ServiceController::class)->names('admin.service');
         Route::resource('/admin/portfolio', \App\Http\Controllers\Admin\PortfolioController::class)->names('admin.portfolio');
+        Route::resource('/admin/gallery', \App\Http\Controllers\Admin\GalleryController::class)->names('admin.gallery');
         
         Route::get('/admin/transactions', [AdminTransactionController::class, 'index'])->name('admin.transactions.index');
         Route::get('/admin/active-packages', [AdminTransactionController::class, 'active'])->name('admin.transactions.active');
