@@ -2,6 +2,125 @@
 
 @section('content')
 
+@push('styles')
+<style>
+    :root {
+        --theme-green-overlay: rgba(20, 83, 45, 0.85); /* Dark green overlay */
+    }
+    
+    .parallax-section {
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+        color: white;
+    }
+    
+    .parallax-section::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-color: var(--theme-green-overlay);
+        z-index: 1;
+    }
+    
+    .parallax-section .container {
+        position: relative;
+        z-index: 2;
+    }
+    
+    /* Text inside parallax sections */
+    .parallax-section .section-title h2, 
+    .parallax-section .section-title p,
+    .parallax-section h2.inner-title,
+    .parallax-section .our-story h3,
+    .parallax-section .our-story h4,
+    .parallax-section .our-story p,
+    .parallax-section .our-story li span {
+        color: white !important;
+    }
+
+    /* Cards should remain white and text inside should be dark */
+    .parallax-section .card, 
+    .parallax-section .service-item, 
+    .parallax-section .portfolio-info {
+        background-color: white !important;
+        border-radius: 1rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    .parallax-section .card h4, 
+    .parallax-section .card p, 
+    .parallax-section .card span,
+    .parallax-section .service-item h3, 
+    .parallax-section .service-item p,
+    .parallax-section .portfolio-info h4, 
+    .parallax-section .portfolio-info p {
+        color: #333 !important;
+    }
+
+    /* Button overrides */
+    .parallax-section .btn-outline-primary {
+        border-color: #10b981;
+        color: #10b981;
+    }
+    .parallax-section .btn-outline-primary:hover {
+        background-color: #10b981;
+        color: white;
+    }
+
+    /* Solid green section style */
+    .solid-green-section {
+        background-color: var(--theme-green-overlay) !important;
+        color: white;
+    }
+    
+    .solid-green-section .section-title h2, 
+    .solid-green-section .section-title p,
+    .solid-green-section h2.inner-title,
+    .solid-green-section .our-story h3,
+    .solid-green-section .our-story h4,
+    .solid-green-section .our-story p,
+    .solid-green-section .our-story li span {
+        color: white !important;
+    }
+
+    .solid-green-section .card, 
+    .solid-green-section .service-item, 
+    .solid-green-section .portfolio-info {
+        background-color: white !important;
+        border-radius: 1rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    .solid-green-section .card h4, 
+    .solid-green-section .card p, 
+    .solid-green-section .card span,
+    .solid-green-section .service-item h3, 
+    .solid-green-section .service-item p,
+    .solid-green-section .portfolio-info h4, 
+    .solid-green-section .portfolio-info p {
+        color: #333 !important;
+    }
+
+    /* Adjust about image z-index */
+    .about-img {
+        position: relative;
+        z-index: 2;
+    }
+</style>
+@endpush
+
+@php
+    $bgImage = isset($settings['parallax_bg_1']) && !empty($settings['parallax_bg_1']) 
+                ? Storage::url($settings['parallax_bg_1']) 
+                : ((isset($heroes[0]) && !empty($heroes[0]->image)) ? Storage::url($heroes[0]->image) : asset('landingPage/img/hero-carousel/hero-carousel-1.jpg'));
+    
+    $bgImage2 = isset($settings['parallax_bg_2']) && !empty($settings['parallax_bg_2'])
+                ? Storage::url($settings['parallax_bg_2'])
+                : asset('landingPage/img/services.jpg');
+@endphp
 
     <!-- Hero Section -->
     <section id="hero" class="hero section dark-background">
@@ -33,8 +152,51 @@
 
     </section><!-- /Hero Section -->
 
+    <!-- Latest Articles Section -->
+    <section id="latest-articles" class="services section light-background">
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Artikel Terbaru</h2>
+        <p>Ikuti perkembangan berita dan informasi terbaru dari kami</p>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+        <div class="row gy-4">
+          @forelse($articles as $article)
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ 100 * $loop->iteration }}">
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden" style="transition: transform 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-10px)'" onmouseout="this.style.transform='translateY(0)'">
+              @if($article->image)
+                <img src="{{ Storage::url($article->image) }}" class="card-img-top" alt="{{ $article->title }}" style="height: 250px; object-fit: cover;">
+              @else
+                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 250px;">
+                  <span class="text-muted"><i class="bi bi-image text-secondary" style="font-size: 3rem;"></i></span>
+                </div>
+              @endif
+              <div class="card-body p-4 d-flex flex-column">
+                <h4 class="card-title fw-bold mb-3">{{ $article->title }}</h4>
+                <p class="card-text text-muted mb-4">{{ \Illuminate\Support\Str::limit(strip_tags($article->content), 120) }}</p>
+                <div class="mt-auto">
+                    <a href="{{ route('article.show', $article) }}" class="btn btn-outline-primary rounded-pill px-4">Baca Selengkapnya</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          @empty
+          <div class="col-12 text-center">
+            <p class="text-muted">Belum ada artikel.</p>
+          </div>
+          @endforelse
+        </div>
+        @if($articles->count() > 0)
+        <div class="text-center mt-5">
+            <a href="{{ route('article.index') }}" class="btn btn-primary rounded-pill px-4 py-2">Lihat Semua Artikel</a>
+        </div>
+        @endif
+      </div>
+    </section><!-- /Latest Articles Section -->
+
     <!-- About Section -->
-    <section id="about" class="about section">
+    <section id="about" class="about section parallax-section" style="background-image: url('{{ $bgImage }}');">
 
       <div class="container">
 
@@ -73,7 +235,7 @@
     </section><!-- /About Section -->
 
     <!-- Services Section -->
-    <section id="services" class="services section light-background">
+    <section id="services" class="services section solid-green-section">
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
@@ -106,7 +268,7 @@
     </section><!-- /Services Section -->
 
     <!-- Portfolio Section -->
-    <section id="portfolio" class="portfolio section">
+    <section id="portfolio" class="portfolio section light-background">
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
@@ -156,8 +318,45 @@
 
     </section><!-- /Portfolio Section -->
 
+    <!-- Team Section -->
+    <section id="team" class="team section solid-green-section">
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Tim Kami</h2>
+        <p>Orang-orang hebat di balik kesuksesan kawasan kami</p>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+        <div class="row gy-5">
+          @forelse($teams as $team)
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ 100 * $loop->iteration }}">
+              <div class="member d-flex flex-column align-items-center text-center p-4 card border-0 shadow-sm rounded-4 h-100" style="transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-10px)'" onmouseout="this.style.transform='translateY(0)'">
+                <div class="pic mb-4 overflow-hidden rounded-circle shadow" style="width: 150px; height: 150px;">
+                  @if($team->image)
+                    <img src="{{ Storage::url($team->image) }}" class="img-fluid" alt="{{ $team->name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                  @else
+                    <div class="bg-light d-flex align-items-center justify-content-center" style="width: 100%; height: 100%;">
+                      <i class="bi bi-person text-secondary" style="font-size: 4rem;"></i>
+                    </div>
+                  @endif
+                </div>
+                <div class="member-info">
+                  <h4 class="fw-bold mb-2">{{ $team->name }}</h4>
+                  <span class="text-muted d-block mb-3" style="font-size: 0.9rem;">{{ $team->position }}</span>
+                </div>
+              </div>
+            </div><!-- End Team Member -->
+          @empty
+            <div class="col-12 text-center text-white">
+              <p>Belum ada data anggota tim.</p>
+            </div>
+          @endforelse
+        </div>
+      </div>
+    </section><!-- /Team Section -->
+
     <!-- Tour Packages Section -->
-    <section id="tour-packages" class="services section light-background">
+    <section id="tour-packages" class="services section parallax-section" style="background-image: url('{{ $bgImage2 }}');">
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
@@ -209,38 +408,5 @@
 
     </section><!-- /Tour Packages Section -->
 
-    <!-- Gallery Section -->
-    <section id="gallery" class="portfolio section">
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Galeri Foto</h2>
-        <p>Lihat lebih dekat pesona dan keindahan yang kami tawarkan melalui galeri foto kami.</p>
-      </div><!-- End Section Title -->
 
-      <div class="container">
-        <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
-          <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
-            @forelse($galleries as $gallery)
-              <div class="col-lg-4 col-md-6 portfolio-item isotope-item">
-                <div class="portfolio-content h-100">
-                  <img src="{{ asset('storage/' . $gallery->image) }}" class="img-fluid" alt="{{ $gallery->title }}" style="width: 100%; height: 250px; object-fit: cover;">
-                  <div class="portfolio-info">
-                    @if($gallery->title)
-                      <h4>{{ $gallery->title }}</h4>
-                    @endif
-                    <a href="{{ asset('storage/' . $gallery->image) }}" title="{{ $gallery->title }}" data-gallery="portfolio-gallery-gallery" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                  </div>
-                </div>
-              </div><!-- End Gallery Item -->
-            @empty
-              <div class="col-12 text-center">
-                <p>Belum ada foto galeri.</p>
-              </div>
-            @endforelse
-          </div><!-- End Gallery Container -->
-        </div>
-      </div>
-    </section><!-- /Gallery Section -->
-
-  
 @endsection

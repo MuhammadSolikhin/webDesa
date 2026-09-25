@@ -53,6 +53,13 @@
                             <x-input-error class="mt-2" :messages="$errors->get('map_file')" />
                         </div>
 
+                        <!-- Video URL -->
+                        <div>
+                            <x-input-label for="video_url" :value="__('Video URL (YouTube) - Opsional')" />
+                            <x-text-input id="video_url" name="video_url" type="url" class="mt-1 block w-full" :value="old('video_url')" placeholder="https://www.youtube.com/watch?v=..." />
+                            <x-input-error class="mt-2" :messages="$errors->get('video_url')" />
+                        </div>
+
                         <div class="flex items-center justify-end mt-4 gap-4">
                             <a href="{{ route('admin.portfolio.index') }}" class="text-sm text-gray-600 hover:text-gray-900 underline">Batal</a>
                             <x-primary-button>

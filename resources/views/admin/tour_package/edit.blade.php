@@ -66,6 +66,13 @@
                             <x-input-error class="mt-2" :messages="$errors->get('kml_file')" />
                         </div>
 
+                        <!-- Video URL -->
+                        <div>
+                            <x-input-label for="video_url" :value="__('Video URL (YouTube) - Opsional')" />
+                            <x-text-input id="video_url" name="video_url" type="url" class="mt-1 block w-full" :value="old('video_url', $tourPackage->video_url)" placeholder="https://www.youtube.com/watch?v=..." />
+                            <x-input-error class="mt-2" :messages="$errors->get('video_url')" />
+                        </div>
+
                         <div class="flex items-center gap-4">
                             <x-primary-button>{{ __('Simpan Perubahan') }}</x-primary-button>
                             <a href="{{ route('admin.tour-package.index') }}" class="text-sm text-gray-600 hover:text-gray-900">{{ __('Batal') }}</a>

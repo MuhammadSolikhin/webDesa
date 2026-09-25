@@ -29,6 +29,7 @@ class PortfolioController extends Controller
             'image.*' => 'required|image|max:10240',
             'category' => 'required|string|max:255',
             'map_file' => 'nullable|file|mimes:zip,json,geojson,kml,xml|max:51200',
+            'video_url' => 'nullable|url',
         ]);
 
         $imagePaths = [];
@@ -46,6 +47,7 @@ class PortfolioController extends Controller
             'image' => $imagePaths,
             'category' => $request->category,
             'map_file' => $mapFilePath,
+            'video_url' => $request->video_url,
         ]);
 
         return redirect()->route('admin.portfolio.index')->with('success', 'Portfolio created successfully.');
@@ -65,9 +67,10 @@ class PortfolioController extends Controller
             'image.*' => 'nullable|image|max:10240',
             'category' => 'required|string|max:255',
             'map_file' => 'nullable|file|mimes:zip,json,geojson,kml,xml|max:51200',
+            'video_url' => 'nullable|url',
         ]);
 
-        $data = $request->only(['title', 'description', 'category']);
+        $data = $request->only(['title', 'description', 'category', 'video_url']);
 
         if ($request->hasFile('image')) {
             if (!empty($portfolio->image)) {

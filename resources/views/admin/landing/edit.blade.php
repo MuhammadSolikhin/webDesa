@@ -117,6 +117,41 @@
                             </div>
                         </div>
 
+                        <!-- Parallax Backgrounds -->
+                        <div class="pt-4 border-t border-gray-200">
+                            <h4 class="mb-4 font-medium text-gray-900">Parallax Backgrounds</h4>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <x-input-label for="parallax_bg_1" :value="__('Parallax Background 1 (Profil Section)')" />
+                                    @php
+                                        $parallaxBg1 = $settings['parallax_bg_1'] ?? null;
+                                        $parallaxBg1Url = $parallaxBg1 ? Storage::url($parallaxBg1) : '';
+                                    @endphp
+                                    @if($parallaxBg1Url)
+                                        <div class="mt-2 mb-2">
+                                            <img src="{{ $parallaxBg1Url }}" alt="Parallax BG 1" class="w-32 h-auto rounded-md shadow-sm">
+                                        </div>
+                                    @endif
+                                    <input id="parallax_bg_1" name="parallax_bg_1" type="file" class="mt-1 block w-full" accept="image/*" />
+                                </div>
+
+                                <div>
+                                    <x-input-label for="parallax_bg_2" :value="__('Parallax Background 2 (Paket Wisata Section)')" />
+                                    @php
+                                        $parallaxBg2 = $settings['parallax_bg_2'] ?? null;
+                                        $parallaxBg2Url = $parallaxBg2 ? Storage::url($parallaxBg2) : '';
+                                    @endphp
+                                    @if($parallaxBg2Url)
+                                        <div class="mt-2 mb-2">
+                                            <img src="{{ $parallaxBg2Url }}" alt="Parallax BG 2" class="w-32 h-auto rounded-md shadow-sm">
+                                        </div>
+                                    @endif
+                                    <input id="parallax_bg_2" name="parallax_bg_2" type="file" class="mt-1 block w-full" accept="image/*" />
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="flex items-center gap-4">
                             <x-primary-button>{{ __('Save') }}</x-primary-button>
                         </div>

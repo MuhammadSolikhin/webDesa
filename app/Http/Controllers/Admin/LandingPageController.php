@@ -27,6 +27,26 @@ class LandingPageController extends Controller
                 \Illuminate\Support\Facades\Storage::disk('public')->delete($oldImage);
             }
         }
+
+        if ($request->hasFile('parallax_bg_1')) {
+            $imagePath = $request->file('parallax_bg_1')->store('landing', 'public');
+            $data['parallax_bg_1'] = $imagePath;
+            
+            $oldImage = LandingSetting::where('key', 'parallax_bg_1')->value('value');
+            if ($oldImage && !str_starts_with($oldImage, 'landingPage/')) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($oldImage);
+            }
+        }
+
+        if ($request->hasFile('parallax_bg_2')) {
+            $imagePath = $request->file('parallax_bg_2')->store('landing', 'public');
+            $data['parallax_bg_2'] = $imagePath;
+            
+            $oldImage = LandingSetting::where('key', 'parallax_bg_2')->value('value');
+            if ($oldImage && !str_starts_with($oldImage, 'landingPage/')) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($oldImage);
+            }
+        }
         
         foreach ($data as $key => $value) {
             LandingSetting::updateOrCreate(

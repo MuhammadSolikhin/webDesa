@@ -15,6 +15,8 @@ class HomeController extends Controller
         $portfolios = \App\Models\Portfolio::all();
         $tourPackages = \App\Models\TourPackage::all();
         $galleries = \App\Models\Gallery::latest()->get();
+        $articles = \App\Models\Article::latest()->take(3)->get();
+        $teams = \App\Models\TeamMember::all();
         
         $settingsRaw = LandingSetting::pluck('value', 'key')->toArray();
         $settings = [];
@@ -22,7 +24,7 @@ class HomeController extends Controller
             $settings[$key] = json_decode($value) ?? $value;
         }
 
-        return view('welcome', compact('heroes', 'services', 'settings', 'portfolios', 'tourPackages', 'galleries'));
+        return view('welcome', compact('heroes', 'services', 'settings', 'portfolios', 'tourPackages', 'galleries', 'articles', 'teams'));
     }
 
     public function portfolio(\App\Models\Portfolio $portfolio)
@@ -37,6 +39,7 @@ class HomeController extends Controller
 
     public function service(\App\Models\Service $service)
     {
-        return view('service.show', compact('service'));
+        $galleries = \App\Models\Gallery::latest()->get();
+        return view('service.show', compact('service', 'galleries'));
     }
 }

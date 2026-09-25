@@ -55,6 +55,18 @@
                 <a href="{{ route('admin.gallery.index') }}" class="flex items-center px-4 py-3 rounded-md transition duration-200 {{ request()->routeIs('admin.gallery.*') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
                     <span class="ml-2 font-medium">{{ __('Kelola Galeri Foto') }}</span>
                 </a>
+
+                <a href="{{ route('admin.article.index') }}" class="flex items-center px-4 py-3 rounded-md transition duration-200 {{ request()->routeIs('admin.article.*') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
+                    <span class="ml-2 font-medium">{{ __('Kelola Artikel') }}</span>
+                </a>
+
+                <a href="{{ route('admin.team.index') }}" class="flex items-center px-4 py-3 rounded-md transition duration-200 {{ request()->routeIs('admin.team.*') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
+                    <span class="ml-2 font-medium">{{ __('Kelola Tim') }}</span>
+                </a>
+
+                <a href="{{ route('admin.webgis.index') }}" class="flex items-center px-4 py-3 rounded-md transition duration-200 {{ request()->routeIs('admin.webgis.*') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
+                    <span class="ml-2 font-medium">{{ __('Kelola WebGIS') }}</span>
+                </a>
             @else
                 <a href="{{ route('user.dashboard') }}" class="flex items-center px-4 py-3 rounded-md transition duration-200 {{ request()->routeIs('user.dashboard') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
                     <span class="ml-2 font-medium">{{ __('Dashboard') }}</span>

@@ -12,6 +12,10 @@ Route::get('/portfolio/{portfolio}', [\App\Http\Controllers\HomeController::clas
 Route::get('/tour-package/{tourPackage}', [\App\Http\Controllers\HomeController::class, 'tourPackage'])->name('tour-package.show');
 Route::get('/service/{service}', [\App\Http\Controllers\HomeController::class, 'service'])->name('service.show');
 
+Route::get('/artikel', [\App\Http\Controllers\ArticleController::class, 'index'])->name('article.index');
+Route::get('/artikel/{article:slug}', [\App\Http\Controllers\ArticleController::class, 'show'])->name('article.show');
+Route::get('/webgis', [\App\Http\Controllers\WebgisController::class, 'index'])->name('webgis.index');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     
     // User Dashboard (Accessible by all verified users)
@@ -53,6 +57,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('/admin/service', \App\Http\Controllers\Admin\ServiceController::class)->names('admin.service');
         Route::resource('/admin/portfolio', \App\Http\Controllers\Admin\PortfolioController::class)->names('admin.portfolio');
         Route::resource('/admin/gallery', \App\Http\Controllers\Admin\GalleryController::class)->names('admin.gallery');
+        Route::resource('/admin/article', \App\Http\Controllers\Admin\ArticleController::class)->names('admin.article');
+        Route::resource('/admin/team', \App\Http\Controllers\Admin\TeamMemberController::class)->names('admin.team');
+        Route::resource('/admin/webgis', \App\Http\Controllers\Admin\WebgisController::class)->names('admin.webgis');
         
         Route::get('/admin/transactions', [AdminTransactionController::class, 'index'])->name('admin.transactions.index');
         Route::get('/admin/active-packages', [AdminTransactionController::class, 'active'])->name('admin.transactions.active');

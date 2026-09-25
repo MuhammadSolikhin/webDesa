@@ -25,6 +25,7 @@ class GalleryController extends Controller
         $request->validate([
             'title' => 'nullable|string|max:255',
             'image' => 'required|image|max:10240', // 10MB
+            'video_url' => 'nullable|url',
         ]);
 
         $imagePath = $request->file('image')->store('galleries', 'public');
@@ -32,6 +33,7 @@ class GalleryController extends Controller
         Gallery::create([
             'title' => $request->title,
             'image' => $imagePath,
+            'video_url' => $request->video_url,
         ]);
 
         return redirect()->route('admin.gallery.index')->with('success', 'Foto berhasil ditambahkan ke galeri.');
@@ -47,9 +49,10 @@ class GalleryController extends Controller
         $request->validate([
             'title' => 'nullable|string|max:255',
             'image' => 'nullable|image|max:10240',
+            'video_url' => 'nullable|url',
         ]);
 
-        $data = $request->only(['title']);
+        $data = $request->only(['title', 'video_url']);
 
         if ($request->hasFile('image')) {
             if ($gallery->image && Storage::disk('public')->exists($gallery->image)) {

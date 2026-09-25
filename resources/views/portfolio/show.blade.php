@@ -128,6 +128,26 @@
               <p>
                 {!! nl2br(e($portfolio->description)) !!}
               </p>
+              @if($portfolio->video_url)
+                  @php
+                      $embedUrl = null;
+                      if (preg_match('/youtube\.com\/watch\?v=([^\&\?\/]+)/', $portfolio->video_url, $id)) {
+                          $embedUrl = 'https://www.youtube.com/embed/' . $id[1];
+                      } else if (preg_match('/youtu\.be\/([^\&\?\/]+)/', $portfolio->video_url, $id)) {
+                          $embedUrl = 'https://www.youtube.com/embed/' . $id[1];
+                      }
+                  @endphp
+                  @if($embedUrl)
+                      <h3 class="mt-4 fs-5 fw-bold">Video</h3>
+                      <div class="ratio ratio-16x9 mt-3">
+                          <iframe src="{{ $embedUrl }}" title="Video" allowfullscreen class="rounded shadow-sm" style="border:0;"></iframe>
+                      </div>
+                  @else
+                      <div class="mt-4">
+                          <a href="{{ $portfolio->video_url }}" target="_blank" class="btn btn-danger"><i class="bi bi-youtube"></i> Tonton Video</a>
+                      </div>
+                  @endif
+              @endif
             </div>
           </div>
 

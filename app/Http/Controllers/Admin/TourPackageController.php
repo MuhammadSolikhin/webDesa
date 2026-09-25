@@ -29,6 +29,7 @@ class TourPackageController extends Controller
             'image' => 'nullable|array',
             'image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
             'kml_file' => 'nullable|file|mimetypes:application/vnd.google-earth.kml+xml,text/xml|max:10240',
+            'video_url' => 'nullable|url',
         ]);
 
         $imagePaths = [];
@@ -49,6 +50,7 @@ class TourPackageController extends Controller
             'price' => $request->price,
             'image' => $imagePaths,
             'kml_file' => $kmlFilePath,
+            'video_url' => $request->video_url,
         ]);
 
         return redirect()->route('admin.tour-package.index')->with('success', 'Paket wisata berhasil ditambahkan.');
@@ -73,6 +75,7 @@ class TourPackageController extends Controller
             'image' => 'nullable|array',
             'image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
             'kml_file' => 'nullable|file|mimetypes:application/vnd.google-earth.kml+xml,text/xml|max:10240',
+            'video_url' => 'nullable|url',
         ]);
 
         if ($request->hasFile('image')) {
@@ -102,6 +105,7 @@ class TourPackageController extends Controller
         $tourPackage->name = $request->name;
         $tourPackage->description = $request->description;
         $tourPackage->price = $request->price;
+        $tourPackage->video_url = $request->video_url;
         $tourPackage->save();
 
         return redirect()->route('admin.tour-package.index')->with('success', 'Paket wisata berhasil diperbarui.');

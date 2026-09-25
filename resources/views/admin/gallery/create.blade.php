@@ -28,6 +28,13 @@
                             <x-input-error class="mt-2" :messages="$errors->get('image')" />
                         </div>
 
+                        <!-- Video URL -->
+                        <div>
+                            <x-input-label for="video_url" :value="__('Video URL (YouTube) - Opsional')" />
+                            <x-text-input id="video_url" name="video_url" type="url" class="mt-1 block w-full" :value="old('video_url')" placeholder="https://www.youtube.com/watch?v=..." />
+                            <x-input-error class="mt-2" :messages="$errors->get('video_url')" />
+                        </div>
+
                         <div class="flex items-center gap-4">
                             <x-primary-button>
                                 {{ __('Simpan') }}
