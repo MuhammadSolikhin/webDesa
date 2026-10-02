@@ -323,7 +323,7 @@
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
         <h2>Tim Kami</h2>
-        <p>Orang-orang hebat di balik kesuksesan kawasan kami</p>
+        <p>Bersama mengembangkan potensi wisata dan budaya Ketungau Hulu</p>
       </div><!-- End Section Title -->
 
       <div class="container">
