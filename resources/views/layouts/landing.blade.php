@@ -50,16 +50,40 @@
       <nav id="navmenu" class="navmenu">
         <ul>
           @foreach($menus as $menu)
+            @php
+                $menuUrl = trim($menu->url ?? '#');
+                if (str_starts_with($menuUrl, 'http://') || str_starts_with($menuUrl, 'https://')) {
+                    $finalUrl = $menuUrl;
+                } elseif (str_starts_with($menuUrl, '#')) {
+                    $finalUrl = url('/' . $menuUrl);
+                } elseif ($menuUrl === '' || $menuUrl === '#') {
+                    $finalUrl = '#';
+                } else {
+                    $finalUrl = url('/' . ltrim($menuUrl, '/'));
+                }
+            @endphp
             @if($menu->children->count() > 0)
-              <li class="dropdown"><a href="{{ url($menu->url ?? '#') }}"><span>{{ $menu->name }}</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+              <li class="dropdown"><a href="{{ $finalUrl }}"><span>{{ $menu->name }}</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
                 <ul>
                   @foreach($menu->children as $child)
-                    <li><a href="{{ url($child->url ?? '#') }}">{{ $child->name }}</a></li>
+                    @php
+                        $childUrl = trim($child->url ?? '#');
+                        if (str_starts_with($childUrl, 'http://') || str_starts_with($childUrl, 'https://')) {
+                            $finalChildUrl = $childUrl;
+                        } elseif (str_starts_with($childUrl, '#')) {
+                            $finalChildUrl = url('/' . $childUrl);
+                        } elseif ($childUrl === '' || $childUrl === '#') {
+                            $finalChildUrl = '#';
+                        } else {
+                            $finalChildUrl = url('/' . ltrim($childUrl, '/'));
+                        }
+                    @endphp
+                    <li><a href="{{ $finalChildUrl }}">{{ $child->name }}</a></li>
                   @endforeach
                 </ul>
               </li>
             @else
-              <li><a href="{{ url($menu->url ?? '#') }}" class="{{ request()->is(ltrim($menu->url, '/')) || ($menu->url == '/#hero' && request()->is('/')) ? 'active' : '' }}">{{ $menu->name }}</a></li>
+              <li><a href="{{ $finalUrl }}" class="{{ request()->is(ltrim($menuUrl, '/')) || ($menuUrl == '/#hero' && request()->is('/')) ? 'active' : '' }}">{{ $menu->name }}</a></li>
             @endif
           @endforeach
           @auth

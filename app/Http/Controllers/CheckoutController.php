@@ -5,30 +5,38 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\TourPackage;
 use App\Models\Transaction;
+use App\Models\LandingSetting;
 use Illuminate\Support\Facades\Auth;
-use Midtrans\Config;
-use Midtrans\Snap;
 
 class CheckoutController extends Controller
 {
     public function show(TourPackage $package)
     {
-        return view('checkout.index', compact('package'));
+        $adminPhone = LandingSetting::where('key', 'contact_whatsapp')->value('value')
+            ?: LandingSetting::where('key', 'contact_phone')->value('value')
+            ?: env('WHATSAPP_ADMIN_NUMBER', '6281234567890');
+
+        return view('checkout.index', compact('package', 'adminPhone'));
     }
 
-    public function process(TourPackage $package)
+    public function process(Request $request, TourPackage $package)
     {
-        // 1. Configure Midtrans
-        Config::$serverKey = config('midtrans.server_key');
-        Config::$isProduction = config('midtrans.is_production');
-        Config::$isSanitized = config('midtrans.is_sanitized');
-        Config::$is3ds = config('midtrans.is_3ds');
+        $request->validate([
+            'phone' => 'required|string|max:30',
+            'visit_date' => 'required|date|after_or_equal:today',
+            'participants' => 'required|integer|min:1|max:500',
+            'notes' => 'nullable|string|max:1000',
+        ], [
+            'phone.required' => 'Nomor WhatsApp / telepon wajib diisi untuk koordinasi.',
+            'visit_date.required' => 'Tanggal rencana kunjungan wajib diisi.',
+            'visit_date.after_or_equal' => 'Tanggal kunjungan tidak boleh di masa lampau.',
+            'participants.required' => 'Jumlah peserta wajib diisi minimal 1 orang.',
+            'participants.min' => 'Jumlah peserta minimal 1 orang.',
+        ]);
 
-        $amount = $package->price ?? 0;
-        
-        if ($amount == 0) {
-            return back()->with('error', 'Paket wisata ini gratis, tidak memerlukan pembayaran.');
-        }
+        $participants = (int) $request->input('participants', 1);
+        $unitPrice = $package->price ?? 0;
+        $amount = $unitPrice * $participants;
 
         $orderId = 'TRX-' . time() . '-' . Auth::id() . '-' . rand(100, 999);
 
@@ -38,43 +46,22 @@ class CheckoutController extends Controller
             ->where('status', 'pending')
             ->delete();
 
-        // Create transaction as pending
+        // Create transaction as pending with WhatsApp payment type
         $transaction = Transaction::create([
             'user_id' => Auth::id(),
             'tour_package_id' => $package->id,
             'order_id' => $orderId,
             'amount' => $amount,
             'status' => 'pending',
+            'payment_type' => 'whatsapp',
+            'phone' => $request->phone,
+            'visit_date' => $request->visit_date,
+            'participants' => $participants,
+            'notes' => $request->notes,
         ]);
 
-        $params = [
-            'transaction_details' => [
-                'order_id' => $orderId,
-                'gross_amount' => $amount,
-            ],
-            'customer_details' => [
-                'first_name' => Auth::user()->name,
-                'email' => Auth::user()->email,
-            ],
-            'item_details' => [
-                [
-                    'id' => $package->id,
-                    'price' => $amount,
-                    'quantity' => 1,
-                    'name' => \Illuminate\Support\Str::limit($package->name, 50),
-                ]
-            ]
-        ];
+        $waUrl = $transaction->whats_app_url;
 
-        try {
-            $snapToken = Snap::getSnapToken($params);
-            
-            $transaction->snap_token = $snapToken;
-            $transaction->save();
-
-            return view('checkout.pay', compact('transaction', 'package', 'snapToken'));
-        } catch (\Exception $e) {
-            return back()->with('error', 'Gagal memuat pembayaran Midtrans: ' . $e->getMessage());
-        }
+        return view('checkout.whatsapp', compact('transaction', 'package', 'waUrl'));
     }
 }

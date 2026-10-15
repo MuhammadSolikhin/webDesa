@@ -26,12 +26,12 @@
                             <x-input-error class="mt-2" :messages="$errors->get('description')" />
                         </div>
 
-                        <!-- File GeoJSON/KML -->
+                        <!-- File WebGIS (GeoJSON/KML/RAR/ZIP) -->
                         <div>
-                            <x-input-label for="file" :value="__('File Peta (.geojson atau .kml)')" />
-                            <input id="file" name="file" type="file" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" accept=".geojson,.kml,.json" required />
+                            <x-input-label for="file" :value="__('File Spasial / Peta (.geojson, .kml, .json, .rar, .zip)')" />
+                            <input id="file" name="file" type="file" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" accept=".geojson,.kml,.json,.rar,.zip,application/x-rar-compressed,application/vnd.rar,application/zip,application/octet-stream" required />
                             <x-input-error class="mt-2" :messages="$errors->get('file')" />
-                            <p class="mt-1 text-sm text-gray-500">Unggah file berformat GeoJSON untuk ditampilkan di peta.</p>
+                            <p class="mt-1 text-sm text-gray-500">Mendukung file peta GeoJSON, KML, JSON, serta arsip data spasial RAR dan ZIP (Shapefile). Maksimal 100MB.</p>
                         </div>
 
                         <div class="flex items-center gap-4 mt-6">

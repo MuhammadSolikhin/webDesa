@@ -14,6 +14,8 @@ Route::get('/service/{service}', [\App\Http\Controllers\HomeController::class, '
 
 Route::get('/artikel', [\App\Http\Controllers\ArticleController::class, 'index'])->name('article.index');
 Route::get('/artikel/{article:slug}', [\App\Http\Controllers\ArticleController::class, 'show'])->name('article.show');
+Route::get('/berita', [\App\Http\Controllers\ArticleController::class, 'index'])->name('berita.index');
+Route::get('/berita/{article:slug}', [\App\Http\Controllers\ArticleController::class, 'show'])->name('berita.show');
 Route::get('/webgis', [\App\Http\Controllers\WebgisController::class, 'index'])->name('webgis.index');
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -62,6 +64,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('/admin/webgis', \App\Http\Controllers\Admin\WebgisController::class)->names('admin.webgis');
         
         Route::get('/admin/transactions', [AdminTransactionController::class, 'index'])->name('admin.transactions.index');
+        Route::patch('/admin/transactions/{transaction}/status', [AdminTransactionController::class, 'updateStatus'])->name('admin.transactions.updateStatus');
         Route::get('/admin/active-packages', [AdminTransactionController::class, 'active'])->name('admin.transactions.active');
     });
 });

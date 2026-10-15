@@ -34,9 +34,20 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse($webgis as $gis)
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $gis->name }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $gis->file }}</td>
-                                        <td class="px-6 py-4">{{ $gis->description }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">{{ $gis->name }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <div class="flex items-center gap-2">
+                                                <span class="px-2 py-0.5 text-xs font-bold rounded uppercase 
+                                                    {{ $gis->extension === 'rar' ? 'bg-amber-100 text-amber-800' : ($gis->extension === 'zip' || $gis->extension === 'shp' ? 'bg-blue-100 text-blue-800' : 'bg-emerald-100 text-emerald-800') }}">
+                                                    {{ $gis->type_label }}
+                                                </span>
+                                                <a href="{{ Storage::url($gis->file) }}" target="_blank" download class="text-indigo-600 hover:text-indigo-900 text-xs font-semibold underline">
+                                                    Unduh File
+                                                </a>
+                                            </div>
+                                            <span class="text-xs text-gray-400 block mt-1 font-mono">{{ basename($gis->file) }}</span>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm text-gray-600">{{ $gis->description ?: '-' }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex space-x-2">
                                                 <form action="{{ route('admin.webgis.destroy', $gis) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data GIS ini?');">

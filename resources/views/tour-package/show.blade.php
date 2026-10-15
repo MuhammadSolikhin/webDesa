@@ -117,8 +117,8 @@
               </ul>
               
               <div class="mt-4">
-                <a href="{{ route('checkout.show', $tourPackage) }}" class="btn btn-lg w-100 text-white rounded-pill" style="background-color: var(--accent-color);">
-                  <i class="bi bi-cart-plus me-2"></i> Pesan Sekarang
+                <a href="{{ route('checkout.show', $tourPackage) }}" class="btn btn-lg w-100 text-white rounded-pill d-flex align-items-center justify-content-center gap-2" style="background-color: #25D366; border-color: #25D366; box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4);">
+                  <i class="bi bi-whatsapp fs-5"></i> Pesan via WhatsApp
                 </a>
               </div>
             </div>

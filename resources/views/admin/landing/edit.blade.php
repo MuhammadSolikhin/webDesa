@@ -97,6 +97,13 @@
                             <x-input-label for="contact_phone" :value="__('Contact Phone')" />
                             <x-text-input id="contact_phone" name="contact_phone" type="text" class="mt-1 block w-full" :value="$settings['contact_phone'] ?? ''" />
                         </div>
+
+                        <!-- Contact WhatsApp (Untuk Pemesanan Paket Wisata) -->
+                        <div>
+                            <x-input-label for="contact_whatsapp" :value="__('Nomor WhatsApp Admin (Pemesanan Paket Wisata)')" />
+                            <x-text-input id="contact_whatsapp" name="contact_whatsapp" type="text" class="mt-1 block w-full" :value="$settings['contact_whatsapp'] ?? ($settings['contact_phone'] ?? '')" placeholder="Contoh: 08123456789 atau 628123456789" />
+                            <p class="text-xs text-gray-500 mt-1">Nomor ini akan menerima pesan WhatsApp otomatis saat pengunjung melakukan transaksi/pemesanan paket wisata.</p>
+                        </div>
                         
                         <!-- Contact Address -->
                         <div>

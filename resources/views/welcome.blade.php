@@ -133,7 +133,7 @@
           <div class="container">
             <h2>{{ $hero->title }}</h2>
             <p>{{ $hero->description }}</p>
-            <a href="about.html" class="btn-get-started">Read More</a>
+            <a href="#about" class="btn-get-started">Read More</a>
           </div>
         </div><!-- End Carousel Item -->
         @endforeach
@@ -394,7 +394,7 @@
                     <span class="fw-bold fs-5" style="color: var(--accent-color);">{{ $package->price ? 'Rp ' . number_format($package->price, 0, ',', '.') : 'Gratis' }}</span>
                     <div>
                         <a href="{{ route('tour-package.show', $package) }}" class="btn btn-outline-secondary rounded-pill px-3 me-2">Detail</a>
-                        <a href="{{ route('checkout.show', $package) }}" class="btn text-white rounded-pill px-4" style="background-color: var(--accent-color);">Pesan</a>
+                        <a href="{{ route('checkout.show', $package) }}" class="btn text-white rounded-pill px-3" style="background-color: #25D366; border-color: #25D366;"><i class="bi bi-whatsapp me-1"></i> Pesan</a>
                     </div>
                 </div>
               </div>

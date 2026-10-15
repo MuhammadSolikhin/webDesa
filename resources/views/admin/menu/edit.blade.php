@@ -23,9 +23,34 @@
 
                         <!-- URL -->
                         <div>
-                            <x-input-label for="url" :value="__('URL')" />
-                            <x-text-input id="url" name="url" type="text" class="mt-1 block w-full" :value="old('url', $menu->url)" />
+                            <x-input-label for="url" :value="__('URL Halaman')" />
+                            <x-text-input id="url" name="url" type="text" class="mt-1 block w-full font-mono text-sm" :value="old('url', $menu->url)" placeholder="Contoh: /artikel atau /#latest-articles" />
                             <x-input-error class="mt-2" :messages="$errors->get('url')" />
+                            
+                            <!-- Quick URL Helpers -->
+                            <div class="mt-2.5">
+                                <span class="text-xs text-gray-500 font-semibold block mb-1">Klik pintasan halaman tujuan di bawah untuk mengisi otomatis:</span>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <button type="button" onclick="setQuickUrl('/artikel', 'Berita')" class="px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs rounded-md border border-indigo-200 transition">
+                                        📰 Halaman Berita (/artikel)
+                                    </button>
+                                    <button type="button" onclick="setQuickUrl('/webgis', 'Peta WebGIS')" class="px-2.5 py-1 bg-green-50 hover:bg-green-100 text-green-700 text-xs rounded-md border border-green-200 transition">
+                                        🗺️ Peta WebGIS (/webgis)
+                                    </button>
+                                    <button type="button" onclick="setQuickUrl('/#latest-articles', 'Berita Terbaru')" class="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs rounded-md border border-gray-300 transition">
+                                        📌 Berita di Beranda (/#latest-articles)
+                                    </button>
+                                    <button type="button" onclick="setQuickUrl('/#hero', 'Beranda')" class="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs rounded-md border border-gray-300 transition">
+                                        🏠 Beranda (/#hero)
+                                    </button>
+                                    <button type="button" onclick="setQuickUrl('/#about', 'Profil')" class="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs rounded-md border border-gray-300 transition">
+                                        ℹ️ Profil Desa (/#about)
+                                    </button>
+                                    <button type="button" onclick="setQuickUrl('/#tour-packages', 'Paket Wisata')" class="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs rounded-md border border-gray-300 transition">
+                                        🧭 Paket Wisata (/#tour-packages)
+                                    </button>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Parent Menu -->
@@ -65,4 +90,14 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function setQuickUrl(url, defaultName) {
+            document.getElementById('url').value = url;
+            var nameInput = document.getElementById('name');
+            if (!nameInput.value || nameInput.value.trim() === '') {
+                nameInput.value = defaultName;
+            }
+        }
+    </script>
 </x-app-layout>
